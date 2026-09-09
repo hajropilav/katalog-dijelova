@@ -57,7 +57,7 @@
     .stanje-ima { color: #1a7a3f; font-weight: 600; }
 
     .btn-narudzba {
-        background: #1a7a3f;
+        background: #7360f2;
         color: white;
         border: none;
         border-radius: 8px;
@@ -67,7 +67,7 @@
         cursor: pointer;
         white-space: nowrap;
     }
-    .btn-narudzba:active { background: #145c30; }
+    .btn-narudzba:active { background: #5f4dd6; }
 
     .prazno { text-align: center; color: #8a9199; padding: 40px 20px; font-size: 14px; }
 
@@ -208,8 +208,12 @@ function prikaziToast(tekst) {
 let cekaTekst = "";
 let cekaBroj = "";
 
-function naruci(naziv, kataloski, cijena) {
-    cekaTekst = `Zdravo, zanima me dio: ${naziv}${kataloski ? " (šifra: " + kataloski + ")" : ""} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
+function naruci(naziv, sifra, kataloski, cijena) {
+    let oznake = [];
+    if (sifra) oznake.push("šifra: " + sifra);
+    if (kataloski) oznake.push("kat. broj: " + kataloski);
+    const oznakeTxt = oznake.length ? " (" + oznake.join(", ") + ")" : "";
+    cekaTekst = `Zdravo, zanima me dio: ${naziv}${oznakeTxt} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
     cekaBroj = viberBroj.replace(/[^0-9]/g, "");
     document.getElementById("izbor-overlay").classList.add("aktivan");
 }
@@ -260,12 +264,12 @@ function prikaziRezultate(lista) {
         <div class="rezultat">
             <div class="rezultat-info">
                 <div class="rezultat-naziv">${d.naziv}</div>
-                <div class="rezultat-meta">${d.kataloski_broj ? "Šifra: " + d.kataloski_broj : ""}</div>
+                <div class="rezultat-meta">${d.sifra ? "Šifra: " + d.sifra : ""}${d.sifra && d.kataloski_broj ? " · " : ""}${d.kataloski_broj ? "Kat. broj: " + d.kataloski_broj : ""}</div>
                 <div class="rezultat-stanje stanje-ima">✓ Na stanju${d.kolicina ? " (" + d.kolicina + " kom)" : ""}</div>
             </div>
             <div style="text-align:right;">
                 <div class="rezultat-cijena">${formatBroj(d.cijena)} KM</div>
-                <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Pošalji upit</button>
+                <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.sifra||'').replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Naruči</button>
             </div>
         </div>
     `).join("");
