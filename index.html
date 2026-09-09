@@ -86,6 +86,56 @@
         max-width: 90%;
         text-align: center;
     }
+
+    .izbor-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+    }
+    .izbor-overlay.aktivan { display: flex; }
+    .izbor-box {
+        background: white;
+        border-radius: 14px;
+        padding: 22px 20px;
+        width: 280px;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .izbor-naslov {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 16px;
+        color: #1a2e35;
+    }
+    .izbor-btn {
+        display: block;
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+    }
+    .izbor-btn--viber { background: #7360f2; }
+    .izbor-btn--viber:active { background: #5f4dd6; }
+    .izbor-btn--whatsapp { background: #25d366; }
+    .izbor-btn--whatsapp:active { background: #1eb958; }
+    .izbor-otkazi {
+        background: none;
+        border: none;
+        color: #8a9199;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 6px;
+    }
 </style>
 </head>
 <body>
@@ -93,6 +143,16 @@
 <div class="header">
     <h1>🔧 Pretraga dijelova</h1>
     <p>Provjeri imamo li dio koji ti treba</p>
+    <p id="viber-info" style="display:none; margin-top:8px; font-size:12.5px;">💬 Narudžbe: <strong id="viber-broj-prikaz"></strong></p>
+</div>
+
+<div id="izbor-overlay" class="izbor-overlay" onclick="if(event.target===this) zatvoriIzbor();">
+    <div class="izbor-box">
+        <div class="izbor-naslov">Kako želiš poslati narudžbu?</div>
+        <button class="izbor-btn izbor-btn--viber" onclick="posaljiViber()">📞 Viber</button>
+        <button class="izbor-btn izbor-btn--whatsapp" onclick="posaljiWhatsApp()">💬 WhatsApp</button>
+        <button class="izbor-otkazi" onclick="zatvoriIzbor()">Otkaži</button>
+    </div>
 </div>
 
 <div class="sadrzaj">
@@ -116,10 +176,23 @@ fetch("katalog.json")
     .then(data => {
         katalog = data.artikli || [];
         viberBroj = data.viber_broj || "";
+        if (viberBroj) {
+            document.getElementById("viber-broj-prikaz").textContent = formatViberBrojRano(viberBroj);
+            document.getElementById("viber-info").style.display = "block";
+        }
     })
     .catch(() => {
         document.getElementById("prazno").textContent = "Katalog trenutno nije dostupan. Pokušaj kasnije.";
     });
+
+function formatViberBrojRano(broj) {
+    const cisto = (broj || "").replace(/[^0-9]/g, "");
+    if (!cisto) return "";
+    if (cisto.length >= 9) {
+        return "+" + cisto.slice(0, 3) + " " + cisto.slice(3, 5) + " " + cisto.slice(5, 8) + " " + cisto.slice(8);
+    }
+    return "+" + cisto;
+}
 
 function formatBroj(b) {
     return b.toFixed(2).replace(".", ",");
@@ -129,25 +202,45 @@ function prikaziToast(tekst) {
     const toast = document.getElementById("toast");
     toast.textContent = tekst;
     toast.style.display = "block";
-    setTimeout(() => { toast.style.display = "none"; }, 3500);
+    setTimeout(() => { toast.style.display = "none"; }, 6000);
 }
 
+let cekaTekst = "";
+let cekaBroj = "";
+
 function naruci(naziv, kataloski, cijena) {
-    const tekst = `Zdravo, zanima me dio: ${naziv}${kataloski ? " (šifra: " + kataloski + ")" : ""} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
+    cekaTekst = `Zdravo, zanima me dio: ${naziv}${kataloski ? " (šifra: " + kataloski + ")" : ""} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
+    cekaBroj = viberBroj.replace(/[^0-9]/g, "");
+    document.getElementById("izbor-overlay").classList.add("aktivan");
+}
+
+function zatvoriIzbor() {
+    document.getElementById("izbor-overlay").classList.remove("aktivan");
+}
+
+function posaljiWhatsApp() {
+    zatvoriIzbor();
+    const url = `https://wa.me/${cekaBroj}?text=${encodeURIComponent(cekaTekst)}`;
+    window.open(url, "_blank");
+}
+
+function posaljiViber() {
+    zatvoriIzbor();
+    const brojPrikaz = formatViberBrojRano(viberBroj);
 
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(tekst).then(() => {
-            prikaziToast("📋 Poruka kopirana! Zalijepi je (Ctrl+V) u Viber i pošalji.");
+        navigator.clipboard.writeText(cekaTekst).then(() => {
+            prikaziToast(`📋 Poruka kopirana! Otvara se Viber — pronađi razgovor sa brojem ${brojPrikaz} i zalijepi poruku (long press → Paste), pa pošalji.`);
         }).catch(() => {
-            prikaziToast("Otvaram Viber — napiši: " + tekst);
+            prikaziToast(`Otvaram Viber — pošalji na broj ${brojPrikaz}: ${cekaTekst}`);
         });
     } else {
-        prikaziToast("Otvaram Viber — napiši: " + tekst);
+        prikaziToast(`Otvaram Viber — pošalji na broj ${brojPrikaz}: ${cekaTekst}`);
     }
 
     setTimeout(() => {
-        window.location.href = `viber://chat?number=%2B${viberBroj.replace(/[^0-9]/g, "")}`;
-    }, 400);
+        window.location.href = `viber://chat?number=%2B${cekaBroj}`;
+    }, 600);
 }
 
 function prikaziRezultate(lista) {
