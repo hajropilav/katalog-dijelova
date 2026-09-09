@@ -265,7 +265,7 @@ function prikaziRezultate(lista) {
             </div>
             <div style="text-align:right;">
                 <div class="rezultat-cijena">${formatBroj(d.cijena)} KM</div>
-                <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Naruči</button>
+                <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Pošalji upit</button>
             </div>
         </div>
     `).join("");
