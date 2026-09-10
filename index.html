@@ -171,7 +171,7 @@
 let katalog = [];
 let viberBroj = "";
 
-fetch("katalog.json")
+fetch("katalog.json?t=" + Date.now(), { cache: "no-store" })
     .then(r => r.json())
     .then(data => {
         katalog = data.artikli || [];
