@@ -260,11 +260,19 @@ function prikaziRezultate(lista) {
 
     prazno.style.display = "none";
 
-    rezultati.innerHTML = lista.slice(0, 100).map(d => `
+    rezultati.innerHTML = lista.slice(0, 100).map(d => {
+        const meta = [];
+        if (d.sifra) meta.push("Šifra: " + d.sifra);
+        if (d.kataloski_broj) meta.push("Kat. broj: " + d.kataloski_broj);
+        if (d.proizvodjac) meta.push(d.proizvodjac);
+        if (d.dodatni_brojevi) meta.push("Alt: " + d.dodatni_brojevi);
+
+        return `
         <div class="rezultat">
             <div class="rezultat-info">
                 <div class="rezultat-naziv">${d.naziv}</div>
-                <div class="rezultat-meta">${d.sifra ? "Šifra: " + d.sifra : ""}${d.sifra && d.kataloski_broj ? " · " : ""}${d.kataloski_broj ? "Kat. broj: " + d.kataloski_broj : ""}</div>
+                <div class="rezultat-meta">${meta.join(" · ")}</div>
+                ${d.vozila ? `<div class="rezultat-meta">🚗 Odgovara: ${d.vozila}</div>` : ""}
                 <div class="rezultat-stanje stanje-ima">✓ Na stanju${d.kolicina ? " (" + d.kolicina + " kom)" : ""}</div>
             </div>
             <div style="text-align:right;">
@@ -272,7 +280,8 @@ function prikaziRezultate(lista) {
                 <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.sifra||'').replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Naruči</button>
             </div>
         </div>
-    `).join("");
+        `;
+    }).join("");
 }
 
 function normalizuj(tekst) {
@@ -281,16 +290,23 @@ function normalizuj(tekst) {
 }
 
 document.getElementById("pretraga").addEventListener("input", function() {
-    const upit = normalizuj(this.value.trim());
-    if (upit.length < 2) {
+    const upitSirovi = this.value.trim();
+    if (upitSirovi.length < 2) {
         document.getElementById("rezultati").innerHTML = "";
         document.getElementById("prazno").style.display = "block";
         document.getElementById("prazno").textContent = "Ukucaj naziv dijela da vidiš da li ga imamo na stanju.";
         return;
     }
-    const filtrirano = katalog.filter(d =>
-        normalizuj(d.naziv).includes(upit) || normalizuj(d.kataloski_broj).includes(upit)
-    );
+    // Pretraga po VIŠE RIJEČI odjednom (npr. "audi a6 2.0") — svaka riječ
+    // mora se naći negdje u podacima o dijelu, bilo kojim redoslijedom
+    const rijeci = upitSirovi.split(/\s+/).map(normalizuj).filter(r => r.length);
+    const filtrirano = katalog.filter(d => {
+        const spojeno = normalizuj([
+            d.naziv, d.kataloski_broj, d.sifra, d.proizvodjac,
+            d.dodatni_brojevi, d.vozila
+        ].filter(Boolean).join(" "));
+        return rijeci.every(rijec => spojeno.includes(rijec));
+    });
     prikaziRezultate(filtrirano);
 });
 </script>
