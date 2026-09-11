@@ -3,6 +3,16 @@
   "artikli": [
     {
       "naziv": "Alternator",
+      "sifra": "0002",
+      "kataloski_broj": "X",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "BMW 520d 1.5 dCi",
+      "cijena": 275.39,
+      "kolicina": 10
+    },
+    {
+      "naziv": "Alternator",
       "sifra": "0033",
       "kataloski_broj": "KAT-494552",
       "proizvodjac": "TRW",
@@ -599,7 +609,7 @@
       "dodatni_brojevi": "",
       "vozila": "Toyota Corolla 1.4 TSI",
       "cijena": 658.46,
-      "kolicina": 15
+      "kolicina": 14
     },
     {
       "naziv": "Auspuh (zadnji lonac)",
@@ -1169,7 +1179,7 @@
       "dodatni_brojevi": "",
       "vozila": "Toyota Auris 2.0 CDTI",
       "cijena": 632.3,
-      "kolicina": 15
+      "kolicina": 16
     },
     {
       "naziv": "Dizna",
@@ -7835,21 +7845,11 @@
       "naziv": "Termostat",
       "sifra": "0001",
       "kataloski_broj": "KAT-465249",
-      "proizvodjac": "Mahle",
+      "proizvodjac": "",
       "dodatni_brojevi": "",
       "vozila": "Peugeot 308 1.4 TSI",
       "cijena": 736.82,
-      "kolicina": 12
-    },
-    {
-      "naziv": "Termostat",
-      "sifra": "0002",
-      "kataloski_broj": "KAT-465249",
-      "proizvodjac": "Meyle",
-      "dodatni_brojevi": "",
-      "vozila": "BMW 520d 1.5 dCi",
-      "cijena": 275.39,
-      "kolicina": 17
+      "kolicina": 1
     },
     {
       "naziv": "Termostat",
