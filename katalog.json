@@ -10000,16 +10000,6 @@
       "vozila": "Renault Megane 2 1.8 TFSI",
       "cijena": 1426.21,
       "kolicina": 4
-    },
-    {
-      "naziv": "test pdv",
-      "sifra": "1003",
-      "kataloski_broj": "",
-      "proizvodjac": "",
-      "dodatni_brojevi": "",
-      "vozila": "",
-      "cijena": 819.0,
-      "kolicina": 1
     }
   ]
 }
