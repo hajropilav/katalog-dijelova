@@ -3,185 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pretraga dijelova</title>
+<title>Pretraga dijelova | AutoDijelovi</title>
 <style>
-    * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        font-family: -apple-system, Arial, sans-serif;
-        background: #f4f6f7;
-        color: #1a2e35;
-    }
-    .header {
-        background: #123e34;
-        color: white;
-        padding: 22px 16px;
-        text-align: center;
-    }
-    .header h1 { margin: 0 0 4px 0; font-size: 22px; }
-    .header p { margin: 0; opacity: 0.85; font-size: 13px; }
+:root{--blue:#1677f2;--ink:#1d2a3d;--muted:#728095;--line:#e3eaf3;--bg:#f4f7fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:14px}button,input,select{font:inherit}button,a,input,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:default;opacity:.55}a{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #92beff;outline-offset:3px}[hidden]{display:none!important}
+.topbar{background:white;border-bottom:1px solid var(--line)}.topbar-inner{max-width:1140px;margin:auto;min-height:86px;padding:18px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.brand-mark{display:grid;place-items:center;width:46px;height:46px;background:var(--blue);color:white;border-radius:13px;font-weight:800;font-size:19px;box-shadow:0 5px 12px #1677f226}.brand b{font-size:17px;display:block}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.contact{font-size:12px;color:var(--muted);text-align:right}.contact strong{display:block;color:var(--ink);font-size:15px;margin-top:4px}.sadrzaj{max-width:1140px;margin:auto;padding:38px 26px 24px}.eyebrow{font-size:11px;letter-spacing:1.8px;font-weight:750;color:var(--blue)}h1{font-size:clamp(28px,4vw,38px);letter-spacing:-1.2px;margin:10px 0 12px}h1+p{color:var(--muted);line-height:1.7;margin:0}.intro{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:26px}.intro-icon{width:74px;height:74px;background:#e7f0ff;color:var(--blue);border-radius:22px;display:grid;place-items:center}.intro-icon svg{width:35px;height:35px}
+.search-panel{padding:24px;background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 5px 20px #23395205}.search-label{display:block;font-weight:650;margin-bottom:11px}.pretraga-wrap{display:flex;align-items:center;position:relative}.pretraga-wrap svg{position:absolute;left:17px;width:21px;height:21px;color:var(--blue)}#pretraga{width:100%;border:1px solid #cdd9e8;border-radius:10px;background:#fbfcfe;padding:16px 46px 16px 49px;color:var(--ink);font-size:16px}#pretraga:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1677f212;outline:none}.clear{position:absolute;right:9px;width:34px;height:34px;border:0;background:transparent;color:var(--muted);font-size:24px;border-radius:7px}.hint{font-size:12px;color:var(--muted);margin:11px 0 0;line-height:1.6}.examples{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:17px}.examples span{font-size:11px;color:var(--muted)}.example{border:1px solid var(--line);background:#f7f9fc;color:#506078;padding:6px 11px;border-radius:6px;font-size:11px}.example:hover{border-color:var(--blue);color:var(--blue)}.results-bar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:27px 0 14px}.results-bar b{font-size:15px}.results-bar select{max-width:190px;background:white;border:1px solid var(--line);padding:9px 12px;border-radius:8px;color:#526176;font-size:12px}
+#rezultati{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rezultat{min-width:0;background:white;border:1px solid var(--line);border-radius:14px;padding:21px;display:flex;flex-direction:column;gap:18px;transition:border-color .15s,box-shadow .15s}.rezultat:hover{border-color:#bad3f5;box-shadow:0 5px 16px #23395208}.rezultat-info{min-width:0;flex:1}.part-brand{font-size:10px;font-weight:750;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}.rezultat-naziv{font-size:15px;line-height:1.5;font-weight:650;overflow-wrap:anywhere}.rezultat-meta{font-size:11px;color:var(--muted);line-height:1.65;margin-top:7px;overflow-wrap:anywhere}.rezultat-bottom{border-top:1px solid #edf1f6;padding-top:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}.rezultat-cijena{font-size:22px;font-weight:750;letter-spacing:-.5px;white-space:nowrap}.tax-note{font-size:10px;color:var(--muted);margin-top:3px}.rezultat-stanje{display:inline-block;font-size:10px;color:#138349;background:#ebf8f0;border-radius:5px;padding:5px 7px;margin-top:12px;font-weight:650}.btn-narudzba{background:var(--blue);color:white;border:0;border-radius:8px;padding:11px 14px;font-size:12px;font-weight:650}.btn-narudzba:hover{background:#0966dc}.prazno{text-align:center;background:white;border:1px dashed #ccd9ea;border-radius:14px;padding:48px 20px;color:var(--muted);font-size:14px;line-height:1.7}.more{display:block;margin:22px auto;background:white;border:1px solid var(--line);border-radius:8px;padding:12px 22px;color:var(--blue);font-weight:600}.footer{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:34px;padding:22px 0;color:var(--muted);font-size:11px;line-height:1.7}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:15px 22px;border-radius:10px;font-size:13px;display:none;box-shadow:0 4px 16px #0002;max-width:90%;width:max-content;text-align:center;z-index:200}.izbor-overlay{display:none;position:fixed;inset:0;background:#12233b80;z-index:100;align-items:center;justify-content:center;padding:20px}.izbor-overlay.aktivan{display:flex}.izbor-box{background:white;border-radius:18px;padding:28px;width:350px;max-width:100%;text-align:center;box-shadow:0 20px 70px #16233640}.izbor-naslov{font-weight:700;font-size:18px;margin-bottom:10px}.izbor-subtitle{font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 20px}.izbor-btn{display:block;width:100%;padding:13px;margin-bottom:10px;border:0;border-radius:9px;font-size:14px;font-weight:600;color:white}.izbor-btn--viber{background:#7360f2}.izbor-btn--whatsapp{background:#168547}.izbor-otkazi{background:none;border:0;color:var(--muted);font-size:13px;padding:9px}
+@media(min-width:1000px){#rezultati{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.topbar-inner{padding:16px 18px;min-height:78px}.brand b{font-size:14px}.brand-mark{width:40px;height:40px;font-size:16px}.contact{font-size:10px}.contact strong{font-size:12px}.sadrzaj{padding:27px 18px 16px}.intro-icon{display:none}.intro{margin-bottom:23px}h1{font-size:29px}.search-panel{padding:18px}.hint{font-size:11px}#pretraga{font-size:16px;padding-top:15px;padding-bottom:15px}#rezultati{grid-template-columns:1fr}.results-bar b{font-size:13px}.results-bar select{max-width:155px;font-size:11px}.rezultat{padding:19px}.footer{flex-direction:column;gap:4px}.prazno{padding:35px 16px}}
 
-    .sadrzaj { max-width: 700px; margin: 0 auto; padding: 16px; }
-
-    .pretraga-wrap { position: relative; margin-bottom: 16px; }
-    .pretraga-wrap span {
-        position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-        font-size: 16px; color: #8a9199;
-    }
-    #pretraga {
-        width: 100%;
-        padding: 14px 14px 14px 40px;
-        font-size: 16px;
-        border: 2px solid #1a7a3f;
-        border-radius: 10px;
-        outline: none;
-    }
-
-    .rezultat {
-        background: white;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        padding: 14px 16px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-    .rezultat-info { flex: 1; min-width: 180px; }
-    .rezultat-naziv { font-weight: 600; font-size: 15px; }
-    .rezultat-meta { font-size: 12.5px; color: #8a9199; margin-top: 3px; }
-    .rezultat-cijena { font-weight: 700; font-size: 16px; color: #123e34; white-space: nowrap; }
-    .rezultat-stanje { font-size: 12px; margin-top: 3px; }
-    .stanje-ima { color: #1a7a3f; font-weight: 600; }
-
-    .btn-narudzba {
-        background: #1a7a3f;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 16px;
-        font-size: 13.5px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-    }
-    .btn-narudzba:active { background: #145c30; }
-
-    .prazno { text-align: center; color: #8a9199; padding: 40px 20px; font-size: 14px; }
-
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #123e34;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 13.5px;
-        display: none;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-        max-width: 90%;
-        text-align: center;
-    }
-
-    .izbor-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.45);
-        z-index: 100;
-        align-items: center;
-        justify-content: center;
-    }
-    .izbor-overlay.aktivan { display: flex; }
-    .izbor-box {
-        background: white;
-        border-radius: 14px;
-        padding: 22px 20px;
-        width: 280px;
-        max-width: 90%;
-        text-align: center;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    }
-    .izbor-naslov {
-        font-weight: 600;
-        font-size: 15px;
-        margin-bottom: 16px;
-        color: #1a2e35;
-    }
-    .izbor-btn {
-        display: block;
-        width: 100%;
-        padding: 13px;
-        margin-bottom: 10px;
-        border: none;
-        border-radius: 10px;
-        font-size: 14.5px;
-        font-weight: 600;
-        color: white;
-        cursor: pointer;
-    }
-    .izbor-btn--viber { background: #7360f2; }
-    .izbor-btn--viber:active { background: #5f4dd6; }
-    .izbor-btn--whatsapp { background: #25d366; }
-    .izbor-btn--whatsapp:active { background: #1eb958; }
-    .izbor-otkazi {
-        background: none;
-        border: none;
-        color: #8a9199;
-        font-size: 13px;
-        cursor: pointer;
-        padding: 6px;
-    }
-</style>
+#pretraga::-webkit-search-cancel-button{-webkit-appearance:none}</style>
 </head>
 <body>
 
-<div class="header">
-    <h1>🔧 Pretraga dijelova</h1>
-    <p>Provjeri imamo li dio koji ti treba</p>
-    <p id="viber-info" style="display:none; margin-top:8px; font-size:12.5px;">💬 Narudžbe: <strong id="viber-broj-prikaz"></strong></p>
-</div>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="./" aria-label="AutoDijelovi – početna"><span class="brand-mark">AD</span><span><b>AutoDijelovi</b><small>Javni katalog dijelova</small></span></a><div id="viber-info" class="contact" style="display:none">Viber / WhatsApp<strong id="viber-broj-prikaz"></strong></div></div></header>
 
 <div id="izbor-overlay" class="izbor-overlay" onclick="if(event.target===this) zatvoriIzbor();">
-    <div class="izbor-box">
-        <div class="izbor-naslov">Kako želiš poslati narudžbu?</div>
+    <div class="izbor-box" role="dialog" aria-modal="true" aria-labelledby="izbor-naslov">
+        <div id="izbor-naslov" class="izbor-naslov">Pošalji upit za dio</div><p class="izbor-subtitle">Odaberi aplikaciju i potvrdi dostupnost s nama.</p>
         <button class="izbor-btn izbor-btn--viber" onclick="posaljiViber()">📞 Viber</button>
         <button class="izbor-btn izbor-btn--whatsapp" onclick="posaljiWhatsApp()">💬 WhatsApp</button>
         <button class="izbor-otkazi" onclick="zatvoriIzbor()">Otkaži</button>
     </div>
 </div>
 
-<div class="sadrzaj">
-    <div class="pretraga-wrap">
-        <span>🔍</span>
-        <input type="text" id="pretraga" placeholder="Ukucaj naziv ili kataloški broj dijela..." autofocus>
-    </div>
-
-    <div id="rezultati"></div>
-    <div id="prazno" class="prazno">Ukucaj naziv dijela da vidiš da li ga imamo na stanju.</div>
-</div>
-
-<div class="toast" id="toast"></div>
+<main class="sadrzaj"><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><label class="search-label" for="pretraga">Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv, kataloški broj ili vozilo…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Pretraži po nazivu, šifri, OEM broju, proizvođaču ili kompatibilnom vozilu.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span></footer></main><div class="toast" id="toast" role="status"></div>
 
 <script>
 let katalog = [];
 let viberBroj = "";
+let ucitano = false;
+let greska = false;
+let limit = 24;
+let prethodniFokus;
 
 fetch("katalog.json?t=" + Date.now(), { cache: "no-store" })
-    .then(r => r.json())
+    .then(r => { if (!r.ok) throw new Error("Katalog nije dostupan"); return r.json(); })
     .then(data => {
-        katalog = data.artikli || [];
-        viberBroj = data.viber_broj || "";
+        if (!Array.isArray(data.artikli)) throw new Error("Neispravan katalog");
+        katalog = data.artikli.filter(d => d && typeof d === "object");
+        ucitano = true;
+        viberBroj = String(data.viber_broj || "");
         if (viberBroj) {
             document.getElementById("viber-broj-prikaz").textContent = formatViberBrojRano(viberBroj);
             document.getElementById("viber-info").style.display = "block";
         }
+        pretrazi();
     })
     .catch(() => {
+        greska = true;
+        document.getElementById("result-count").textContent = "Katalog nije dostupan";
         document.getElementById("prazno").textContent = "Katalog trenutno nije dostupan. Pokušaj kasnije.";
     });
 
@@ -195,7 +67,7 @@ function formatViberBrojRano(broj) {
 }
 
 function formatBroj(b) {
-    return b.toFixed(2).replace(".", ",");
+    return Number(b).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+,)/g, ".");
 }
 
 function prikaziToast(tekst) {
@@ -209,6 +81,8 @@ let cekaTekst = "";
 let cekaBroj = "";
 
 function naruci(naziv, sifra, kataloski, cijena) {
+    if (!viberBroj.replace(/[^0-9]/g, "")) return;
+    prethodniFokus = document.activeElement;
     let oznake = [];
     if (sifra) oznake.push("šifra: " + sifra);
     if (kataloski) oznake.push("kat. broj: " + kataloski);
@@ -216,10 +90,12 @@ function naruci(naziv, sifra, kataloski, cijena) {
     cekaTekst = `Zdravo, zanima me dio: ${naziv}${oznakeTxt} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
     cekaBroj = viberBroj.replace(/[^0-9]/g, "");
     document.getElementById("izbor-overlay").classList.add("aktivan");
+    document.querySelector(".izbor-btn").focus();
 }
 
 function zatvoriIzbor() {
     document.getElementById("izbor-overlay").classList.remove("aktivan");
+    if (prethodniFokus) prethodniFokus.focus();
 }
 
 function posaljiWhatsApp() {
@@ -247,68 +123,46 @@ function posaljiViber() {
     }, 600);
 }
 
-function prikaziRezultate(lista) {
-    const rezultati = document.getElementById("rezultati");
-    const prazno = document.getElementById("prazno");
 
-    if (!lista.length) {
-        rezultati.innerHTML = "";
-        prazno.style.display = "block";
-        prazno.textContent = "Nema dijelova koji odgovaraju pretrazi.";
-        return;
-    }
-
-    prazno.style.display = "none";
-
-    rezultati.innerHTML = lista.slice(0, 100).map(d => {
-        const meta = [];
-        if (d.sifra) meta.push("Šifra: " + d.sifra);
-        if (d.kataloski_broj) meta.push("Kat. broj: " + d.kataloski_broj);
-        if (d.proizvodjac) meta.push(d.proizvodjac);
-        if (d.dodatni_brojevi) meta.push("Alt: " + d.dodatni_brojevi);
-
-        return `
-        <div class="rezultat">
-            <div class="rezultat-info">
-                <div class="rezultat-naziv">${d.naziv}</div>
-                <div class="rezultat-meta">${meta.join(" · ")}</div>
-                ${d.vozila ? `<div class="rezultat-meta">🚗 Odgovara: ${d.vozila}</div>` : ""}
-                <div class="rezultat-stanje stanje-ima">✓ Na stanju${d.kolicina ? " (" + d.kolicina + " kom)" : ""}</div>
-            </div>
-            <div style="text-align:right;">
-                <div class="rezultat-cijena">${formatBroj(d.cijena)} KM</div>
-                <button class="btn-narudzba" onclick="naruci('${d.naziv.replace(/'/g, "\\'")}', '${(d.sifra||'').replace(/'/g, "\\'")}', '${(d.kataloski_broj||'').replace(/'/g, "\\'")}', ${d.cijena})">💬 Naruči</button>
-            </div>
-        </div>
-        `;
-    }).join("");
-}
-
-function normalizuj(tekst) {
-    return (tekst || "").toString().toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-document.getElementById("pretraga").addEventListener("input", function() {
-    const upitSirovi = this.value.trim();
-    if (upitSirovi.length < 2) {
-        document.getElementById("rezultati").innerHTML = "";
-        document.getElementById("prazno").style.display = "block";
-        document.getElementById("prazno").textContent = "Ukucaj naziv dijela da vidiš da li ga imamo na stanju.";
-        return;
-    }
-    // Pretraga po VIŠE RIJEČI odjednom (npr. "audi a6 2.0") — svaka riječ
-    // mora se naći negdje u podacima o dijelu, bilo kojim redoslijedom
-    const rijeci = upitSirovi.split(/\s+/).map(normalizuj).filter(r => r.length);
-    const filtrirano = katalog.filter(d => {
-        const spojeno = normalizuj([
-            d.naziv, d.kataloski_broj, d.sifra, d.proizvodjac,
-            d.dodatni_brojevi, d.vozila
-        ].filter(Boolean).join(" "));
-        return rijeci.every(rijec => spojeno.includes(rijec));
+function element(tag, cls, text) { const el = document.createElement(tag); el.className = cls; if (text !== undefined) el.textContent = text; return el; }
+function normalizuj(tekst) { return String(tekst || "").toLowerCase().replace(/đ/g,"dj").normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+function pretrazi(reset = true) {
+    if (reset) limit = 24;
+    const upit = document.getElementById("pretraga").value.trim();
+    document.getElementById("clear").hidden = !upit;
+    if (!ucitano || greska) return;
+    const rijeci = normalizuj(upit).split(/\s+/).filter(Boolean);
+    const lista = katalog.filter(d => { const text = normalizuj([d.naziv,d.kataloski_broj,d.sifra,d.proizvodjac,d.dodatni_brojevi,d.vozila].filter(Boolean).join(" ")); return rijeci.every(r => text.includes(r)); });
+    const sort = document.getElementById("sort").value;
+    lista.sort((a,b) => sort === "price-up" ? Number(a.cijena)-Number(b.cijena) : sort === "price-down" ? Number(b.cijena)-Number(a.cijena) : String(a.naziv || "").localeCompare(String(b.naziv || ""),"bs"));
+    const root = document.getElementById("rezultati"); root.replaceChildren();
+    document.getElementById("result-count").textContent = (upit ? "Rezultati pretrage" : "Svi dijelovi") + " · " + lista.length;
+    const prazno = document.getElementById("prazno"); prazno.hidden = !!lista.length;
+    prazno.textContent = upit ? "Nema rezultata za ovu pretragu. Pokušaj s drugim nazivom ili kataloškim brojem." : "Trenutno nema dijelova u katalogu.";
+    lista.slice(0,limit).forEach(d => {
+        const card = element("article","rezultat"); const info = element("div","rezultat-info");
+        info.append(element("div","part-brand",d.proizvodjac || "Auto dijelovi"),element("div","rezultat-naziv",d.naziv || "Dio"));
+        const meta = []; if(d.sifra) meta.push("Šifra: " + d.sifra); if(d.kataloski_broj) meta.push("Kat. broj: " + d.kataloski_broj);
+        if(meta.length) info.append(element("div","rezultat-meta",meta.join(" · ")));
+        if(d.dodatni_brojevi) info.append(element("div","rezultat-meta","OEM / Alt: " + d.dodatni_brojevi));
+        if(d.vozila) info.append(element("div","rezultat-meta","Vozila: " + d.vozila));
+        info.append(element("div","rezultat-stanje",Number(d.kolicina)>0 ? "✓ Na stanju · " + d.kolicina + " kom" : "Provjeri dostupnost"));
+        const bottom = element("div","rezultat-bottom"); const price = element("div","");
+        const validPrice = d.cijena !== null && d.cijena !== undefined && Number.isFinite(Number(d.cijena));
+        price.append(element("div","rezultat-cijena",validPrice ? formatBroj(d.cijena) + " KM" : "Na upit"),element("div","tax-note",validPrice ? "Cijena s PDV-om" : ""));
+        const button = element("button","btn-narudzba","Pošalji upit"); button.disabled = !viberBroj.replace(/[^0-9]/g,"") || !validPrice;
+        if(button.disabled) button.title = "Kontakt za ovaj upit trenutno nije dostupan";
+        button.addEventListener("click",() => naruci(String(d.naziv || "Dio"),d.sifra,d.kataloski_broj,Number(d.cijena)));
+        bottom.append(price,button); card.append(info,bottom); root.append(card);
     });
-    prikaziRezultate(filtrirano);
-});
+    document.getElementById("more").hidden = lista.length <= limit;
+}
+document.getElementById("pretraga").addEventListener("input",() => pretrazi());
+document.getElementById("sort").addEventListener("change",() => pretrazi());
+document.getElementById("clear").addEventListener("click",() => { document.getElementById("pretraga").value = ""; pretrazi(); document.getElementById("pretraga").focus(); });
+document.querySelectorAll(".example").forEach(btn => btn.addEventListener("click",() => { document.getElementById("pretraga").value = btn.textContent; pretrazi(); }));
+document.getElementById("more").addEventListener("click",() => { const previousCount = document.getElementById("rezultati").children.length; limit += 24; pretrazi(false); document.querySelectorAll(".btn-narudzba")[previousCount]?.focus(); });
+document.addEventListener("keydown",event => { if(!document.getElementById("izbor-overlay").classList.contains("aktivan")) return; if(event.key === "Escape") zatvoriIzbor(); if(event.key === "Tab") { const buttons = [...document.querySelectorAll(".izbor-box button")]; const first = buttons[0], last = buttons[buttons.length-1]; if(event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if(!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } });
 </script>
 
 </body>
