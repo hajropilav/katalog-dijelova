@@ -2,6 +2,26 @@
   "viber_broj": "38761273448",
   "artikli": [
     {
+      "naziv": "Alnaser",
+      "sifra": "1006",
+      "kataloski_broj": "27041997",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 100.0,
+      "kolicina": 1
+    },
+    {
+      "naziv": "Alnaser Golf 6",
+      "sifra": "1007",
+      "kataloski_broj": "27041997",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 200.0,
+      "kolicina": 1
+    },
+    {
       "naziv": "Alternator",
       "sifra": "0002",
       "kataloski_broj": "X",
@@ -9,7 +29,7 @@
       "dodatni_brojevi": "",
       "vozila": "BMW 520d 1.5 dCi",
       "cijena": 275.39,
-      "kolicina": 10
+      "kolicina": 9
     },
     {
       "naziv": "Alternator",
@@ -55,7 +75,7 @@
       "naziv": "Alternator",
       "sifra": "0256",
       "kataloski_broj": "KAT-146372",
-      "proizvodjac": "Bosch",
+      "proizvodjac": "Sabo",
       "dodatni_brojevi": "",
       "vozila": "Volkswagen Touran 2.0 TDI",
       "cijena": 826.77,
@@ -1252,6 +1272,26 @@
       "kolicina": 5
     },
     {
+      "naziv": "Dizna GOLF 2.0 103 KW",
+      "sifra": "1008",
+      "kataloski_broj": "27041997",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 200.0,
+      "kolicina": 2
+    },
+    {
+      "naziv": "Dizna golf 5",
+      "sifra": "1010",
+      "kataloski_broj": "1806",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 88.0,
+      "kolicina": 1
+    },
+    {
       "naziv": "EGR ventil",
       "sifra": "0150",
       "kataloski_broj": "KAT-480805",
@@ -1410,6 +1450,36 @@
       "vozila": "Peugeot 3008 2.0 TDI",
       "cijena": 644.06,
       "kolicina": 10
+    },
+    {
+      "naziv": "FAR GOLF 6",
+      "sifra": "1009",
+      "kataloski_broj": "1711",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 200.0,
+      "kolicina": 1
+    },
+    {
+      "naziv": "Far Golf 7",
+      "sifra": "1013",
+      "kataloski_broj": "dud1",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 98.98,
+      "kolicina": 1
+    },
+    {
+      "naziv": "Far golf 8",
+      "sifra": "1014",
+      "kataloski_broj": "2026",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 179.97,
+      "kolicina": 1
     },
     {
       "naziv": "Farovi prednji",
@@ -2660,6 +2730,26 @@
       "vozila": "Audi A5 1.9 TDI",
       "cijena": 641.51,
       "kolicina": 16
+    },
+    {
+      "naziv": "Interkuler",
+      "sifra": "1003",
+      "kataloski_broj": "KAT-666879",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 100.0,
+      "kolicina": 1
+    },
+    {
+      "naziv": "Interkuler",
+      "sifra": "1004",
+      "kataloski_broj": "88888888",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "",
+      "vozila": "Audi A3 2.0 TDI CR",
+      "cijena": 80.0,
+      "kolicina": 1
     },
     {
       "naziv": "Ispušna grana",
@@ -5550,6 +5640,26 @@
       "vozila": "Audi A3 2.0 TDI CR · Audi A6 C7 1.9 TDI",
       "cijena": 199.34,
       "kolicina": 13
+    },
+    {
+      "naziv": "Prednji branik golf 6",
+      "sifra": "1011",
+      "kataloski_broj": "0306",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 99.01,
+      "kolicina": 1
+    },
+    {
+      "naziv": "Prednji branik golf 7",
+      "sifra": "1012",
+      "kataloski_broj": "1711",
+      "proizvodjac": "",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 120.0,
+      "kolicina": 1
     },
     {
       "naziv": "Pumpa goriva",
