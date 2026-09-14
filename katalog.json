@@ -1462,6 +1462,16 @@
       "kolicina": 1
     },
     {
+      "naziv": "Far GOLF 8",
+      "sifra": "1019",
+      "kataloski_broj": "00000000",
+      "proizvodjac": "ALEO",
+      "dodatni_brojevi": "",
+      "vozila": "",
+      "cijena": 99.01,
+      "kolicina": 1
+    },
+    {
       "naziv": "Far golf 8",
       "sifra": "1014",
       "kataloski_broj": "2026",
@@ -2739,16 +2749,6 @@
       "dodatni_brojevi": "",
       "vozila": "Audi A3 2.0 TDI CR",
       "cijena": 80.0,
-      "kolicina": 1
-    },
-    {
-      "naziv": "Interkuler Golf 6 2.0 81KW",
-      "sifra": "1021",
-      "kataloski_broj": "",
-      "proizvodjac": "",
-      "dodatni_brojevi": "",
-      "vozila": "",
-      "cijena": 351.0,
       "kolicina": 1
     },
     {
@@ -6149,16 +6149,6 @@
       "dodatni_brojevi": "",
       "vozila": "Toyota Corolla 1.8 TFSI",
       "cijena": 535.05,
-      "kolicina": 1
-    },
-    {
-      "naziv": "Retrovizor desni Golf 6",
-      "sifra": "1020",
-      "kataloski_broj": "",
-      "proizvodjac": "",
-      "dodatni_brojevi": "",
-      "vozila": "",
-      "cijena": 0.0,
       "kolicina": 1
     },
     {
