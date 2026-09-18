@@ -14,6 +14,7 @@
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:15px 22px;border-radius:10px;font-size:13px;display:none;box-shadow:0 4px 16px #0002;max-width:90%;width:max-content;text-align:center;z-index:200}.izbor-overlay{display:none;position:fixed;inset:0;background:#12233b80;z-index:100;align-items:center;justify-content:center;padding:20px}.izbor-overlay.aktivan{display:flex}.izbor-box{background:white;border-radius:18px;padding:28px;width:350px;max-width:100%;text-align:center;box-shadow:0 20px 70px #16233640}.izbor-naslov{font-weight:700;font-size:18px;margin-bottom:10px}.izbor-subtitle{font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 20px}.izbor-btn{display:block;width:100%;padding:13px;margin-bottom:10px;border:0;border-radius:9px;font-size:14px;font-weight:600;color:white}.izbor-btn--viber{background:#7360f2}.izbor-btn--whatsapp{background:#168547}.izbor-otkazi{background:none;border:0;color:var(--muted);font-size:13px;padding:9px}
 @media(min-width:1000px){#rezultati{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.topbar-inner{padding:16px 18px;min-height:78px}.brand b{font-size:14px}.brand-mark{width:40px;height:40px;font-size:16px}.contact{font-size:10px}.contact strong{font-size:12px}.sadrzaj{padding:27px 18px 16px}.intro-icon{display:none}.intro{margin-bottom:23px}h1{font-size:29px}.search-panel{padding:18px}.hint{font-size:11px}#pretraga{font-size:16px;padding-top:15px;padding-bottom:15px}#rezultati{grid-template-columns:1fr}.results-bar b{font-size:13px}.results-bar select{max-width:155px;font-size:11px}.rezultat{padding:19px}.footer{flex-direction:column;gap:4px}.prazno{padding:35px 16px}}
 
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.filters select{width:100%;background:#fbfcfe;border:1px solid #cdd9e8;border-radius:10px;padding:13px 12px;color:var(--ink);font-size:15px}.filters select:disabled{opacity:.6}.brand-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;min-height:22px}.brand-row .part-brand{margin:0}.brand-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0}@media(max-width:680px){.filters{grid-template-columns:1fr}}
 #pretraga::-webkit-search-cancel-button{-webkit-appearance:none}</style>
 </head>
 <body>
@@ -40,7 +41,7 @@
     </div>
 </div>
 
-<main class="sadrzaj"><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><label class="search-label" for="pretraga">Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv, kataloški broj ili vozilo…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Pretraži po nazivu, šifri, OEM broju, proizvođaču ili kompatibilnom vozilu.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span></footer></main><div class="toast" id="toast" role="status"></div>
+<main class="sadrzaj"><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><label class="search-label" for="pretraga">Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv, kataloški broj ili vozilo…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><div class="filters"><select id="f-marka" aria-label="Marka vozila"><option value="">Sve marke</option></select><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select></div><p class="hint" id="search-hint">Pretraži po nazivu, šifri, OEM broju, proizvođaču ili kompatibilnom vozilu.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span></footer></main><div class="toast" id="toast" role="status"></div>
 
 <script>
 let katalog = [];
@@ -61,6 +62,7 @@ fetch("katalog.json?t=" + Date.now(), { cache: "no-store" })
             document.getElementById("viber-broj-prikaz").textContent = formatViberBrojRano(viberBroj);
             document.getElementById("viber-info").style.display = "block";
         }
+        izgradiFiltere();
         pretrazi();
     })
     .catch(() => {
@@ -135,6 +137,59 @@ function posaljiViber() {
     }, 600);
 }
 
+const LOGO_BAZA = "https://cdn.jsdelivr.net/gh/vehiclespecs/brand-logos@v1.0.0/";
+const LOGO_ALIASI = { mercedes: "mercedesbenz", vw: "volkswagen" };
+let logoMapa = {};
+const kljucMarke = s => { const k = normalizuj(s).replace(/[^a-z0-9]/g, ""); return LOGO_ALIASI[k] || k; };
+fetch(LOGO_BAZA + "brands.json").then(r => r.json()).then(data => {
+    Object.keys(data).forEach(ime => { logoMapa[kljucMarke(ime)] = data[ime]; });
+    if (ucitano) pretrazi(false);
+}).catch(() => {});
+
+let markeIndeks = new Map();
+function izgradiFiltere() {
+    markeIndeks = new Map();
+    katalog.forEach(d => (Array.isArray(d.kompat) ? d.kompat : []).forEach(par => {
+        const marka = String(par[0] || "").trim(), model = String(par[1] || "").trim();
+        if (!marka) return;
+        const km = kljucMarke(marka);
+        if (!markeIndeks.has(km)) markeIndeks.set(km, { label: marka, modeli: new Map() });
+        if (model) { const kmod = normalizuj(model).replace(/\s+/g, " "); const m = markeIndeks.get(km).modeli; if (!m.has(kmod)) m.set(kmod, model); }
+    }));
+    const sel = document.getElementById("f-marka");
+    [...markeIndeks.entries()].sort((a, b) => a[1].label.localeCompare(b[1].label, "bs")).forEach(([k, v]) => {
+        const o = document.createElement("option"); o.value = k; o.textContent = v.label; sel.appendChild(o);
+    });
+}
+function osvjeziModele() {
+    const km = document.getElementById("f-marka").value, selM = document.getElementById("f-model");
+    selM.replaceChildren();
+    const prvi = document.createElement("option"); prvi.value = ""; selM.appendChild(prvi);
+    if (!km || !markeIndeks.has(km)) { prvi.textContent = "Prvo izaberi marku"; selM.disabled = true; return; }
+    prvi.textContent = "Svi modeli"; selM.disabled = false;
+    [...markeIndeks.get(km).modeli.entries()].sort((a, b) => a[1].localeCompare(b[1], "bs", { numeric: true })).forEach(([k, label]) => {
+        const o = document.createElement("option"); o.value = k; o.textContent = label; selM.appendChild(o);
+    });
+}
+function odgovaraFilteru(d, km, kmod) {
+    if (!km) return true;
+    return (Array.isArray(d.kompat) ? d.kompat : []).some(par => kljucMarke(par[0]) === km && (!kmod || normalizuj(par[1]).replace(/\s+/g, " ").trim() === kmod));
+}
+function markeIkonice(d) {
+    const box = element("div", "");
+    box.style.display = "contents";
+    const vidjeno = new Set();
+    (Array.isArray(d.kompat) ? d.kompat : []).forEach(par => {
+        const k = kljucMarke(par[0]);
+        if (!k || vidjeno.has(k) || vidjeno.size >= 3 || !logoMapa[k]) return;
+        vidjeno.add(k);
+        const img = document.createElement("img");
+        img.className = "brand-logo"; img.src = LOGO_BAZA + logoMapa[k]; img.alt = String(par[0]); img.title = String(par[0]); img.loading = "lazy";
+        img.onerror = function () { this.remove(); };
+        box.appendChild(img);
+    });
+    return box;
+}
 function element(tag, cls, text) { const el = document.createElement(tag); el.className = cls; if (text !== undefined) el.textContent = text; return el; }
 function normalizuj(tekst) { return String(tekst || "").toLowerCase().replace(/đ/g,"dj").normalize("NFD").replace(/[̀-ͯ]/g, ""); }
 function slikaElement(d) {
@@ -205,7 +260,8 @@ function pretrazi(reset = true) {
     document.getElementById("clear").hidden = !upit;
     if (!ucitano || greska) return;
     const rijeci = normalizuj(upit).split(/\s+/).filter(Boolean);
-    const lista = katalog.filter(d => { const text = normalizuj([d.naziv,d.kataloski_broj,d.sifra,d.proizvodjac,d.dodatni_brojevi,d.vozila].filter(Boolean).join(" ")); return rijeci.every(r => text.includes(r)); });
+    const fMarka = document.getElementById("f-marka").value, fModel = document.getElementById("f-model").value;
+    const lista = katalog.filter(d => { if (!odgovaraFilteru(d, fMarka, fModel)) return false; const text = normalizuj([d.naziv,d.kataloski_broj,d.sifra,d.proizvodjac,d.dodatni_brojevi,d.vozila].filter(Boolean).join(" ")); return rijeci.every(r => text.includes(r)); });
     const sort = document.getElementById("sort").value;
     lista.sort((a,b) => sort === "price-up" ? Number(a.cijena)-Number(b.cijena) : sort === "price-down" ? Number(b.cijena)-Number(a.cijena) : String(a.naziv || "").localeCompare(String(b.naziv || ""),"bs"));
     const root = document.getElementById("rezultati"); root.replaceChildren();
@@ -216,7 +272,8 @@ function pretrazi(reset = true) {
         const card = element("article","rezultat");
         const top = element("div","rezultat-top");
         const info = element("div","rezultat-info");
-        info.append(element("div","part-brand",d.proizvodjac || "Auto dijelovi"),element("div","rezultat-naziv",d.naziv || "Dio"));
+        const brandRow = element("div","brand-row"); brandRow.append(markeIkonice(d),element("div","part-brand",d.proizvodjac || "Auto dijelovi"));
+        info.append(brandRow,element("div","rezultat-naziv",d.naziv || "Dio"));
         const meta = []; if(d.sifra) meta.push("Šifra: " + d.sifra); if(d.kataloski_broj) meta.push("Kat. broj: " + d.kataloski_broj);
         if(meta.length) info.append(element("div","rezultat-meta",meta.join(" · ")));
         if(d.dodatni_brojevi) info.append(element("div","rezultat-meta","OEM / Alt: " + d.dodatni_brojevi));
@@ -235,6 +292,8 @@ function pretrazi(reset = true) {
 }
 document.getElementById("pretraga").addEventListener("input",() => pretrazi());
 document.getElementById("sort").addEventListener("change",() => pretrazi());
+document.getElementById("f-marka").addEventListener("change",() => { osvjeziModele(); pretrazi(); });
+document.getElementById("f-model").addEventListener("change",() => pretrazi());
 document.getElementById("clear").addEventListener("click",() => { document.getElementById("pretraga").value = ""; pretrazi(); document.getElementById("pretraga").focus(); });
 document.querySelectorAll(".example").forEach(btn => btn.addEventListener("click",() => { document.getElementById("pretraga").value = btn.textContent; pretrazi(); }));
 document.getElementById("more").addEventListener("click",() => { const previousCount = document.getElementById("rezultati").children.length; limit += 24; pretrazi(false); document.querySelectorAll(".btn-narudzba")[previousCount]?.focus(); });
