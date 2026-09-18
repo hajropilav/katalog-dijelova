@@ -267,8 +267,8 @@ function osvjeziModele() {
         const opt = document.createElement("option"); opt.value = k; opt.textContent = o.label + (o.n ? " (" + o.n + ")" : ""); selM.appendChild(opt);
     });
 }
-const DIZEL_RE = /(TDI|CDTI|CDI|DCI|BLUEHDI|HDI|TDCI|DTH|DTI|CRDI|JTDM|JTD|MULTIJET|D-4D|DDIS|SDI|\bTD\b|\bD\b|DIESEL|DIZEL)/;
-const BENZIN_RE = /(TFSI|TSI|FSI|MPI|TCE|THP|VTI|GDI|VVT|ECOBOOST|BENZIN|\bTSI\b|\bI\b)/;
+const DIZEL_RE = /(TDI|CDTI|CDI|DCI|BLUEHDI|HDI|TDCI|DTH|DTI|CRDI|JTDM|JTD|MULTIJET|D-4D|DDIS|SDI|\bTD\b|\bD\b|\d{2,3}\s?D\b|DIESEL|DIZEL)/;
+const BENZIN_RE = /(TFSI|TSI|FSI|MPI|TCE|THP|VTI|GDI|VVT|ECOBOOST|BENZIN|\bTSI\b|\bI\b|\d{2,3}\s?I\b)/;
 const motorCache = new Map();
 function parsiMotor(s) {
     const k = String(s || "");
