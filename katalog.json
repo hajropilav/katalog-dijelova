@@ -5521,6 +5521,22 @@
       "slike_urls": []
     },
     {
+      "naziv": "Multimedija RNS 510",
+      "sifra": "1023",
+      "kataloski_broj": "27041997H",
+      "proizvodjac": "Bosch",
+      "dodatni_brojevi": "H19970427",
+      "vozila": "GOLF 6 6 · Volkswagen GOLF 5",
+      "cijena": 500.0,
+      "kolicina": 1,
+      "slika_url": "https://erp.autodijelovi.site/javni/slika/1023?slika=0",
+      "slike_urls": [
+        "https://erp.autodijelovi.site/javni/slika/1023?slika=0",
+        "https://erp.autodijelovi.site/javni/slika/1023?slika=1",
+        "https://erp.autodijelovi.site/javni/slika/1023?slika=2"
+      ]
+    },
+    {
       "naziv": "Nosač motora",
       "sifra": "0113",
       "kataloski_broj": "KAT-938504",
