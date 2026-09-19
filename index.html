@@ -2,7 +2,16 @@
 <html lang="bs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1677f2">
+<meta name="application-name" content="AutoDijelovi">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AutoDijelovi">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Pretraga dijelova | AutoDijelovi</title>
 <style>
 :root{--blue:#1677f2;--ink:#1d2a3d;--muted:#728095;--line:#e3eaf3;--bg:#f4f7fb}
@@ -17,7 +26,12 @@
 .filters+.search-label{margin-top:20px}.opciono{font-weight:400;color:var(--muted);font-size:12px}#vozilo-label{margin-bottom:0}
 .filters{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px}.filters>*{grid-column:span 2;min-width:0}.filters .cbx,.filters #f-model{grid-column:span 3}.filters select{width:100%;background:#fbfcfe;border:1px solid #cdd9e8;border-radius:10px;padding:13px 12px;color:var(--ink);font-size:15px}.filters select:disabled{opacity:.6}.rezultat-lijevo{width:64px;flex-shrink:0}.brand-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}.brand-logo{width:18px;height:18px;object-fit:contain;flex-shrink:0}
 .cbx{position:relative;min-width:0}.cbx-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fbfcfe;border:1px solid #cdd9e8;border-radius:10px;padding:13px 12px;color:var(--ink);font-size:15px;text-align:left}.cbx-btn-txt{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cbx-panel{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:60;background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px #16233626;padding:8px}.cbx-panel input{width:100%;border:1px solid #cdd9e8;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:6px}.cbx-panel ul{list-style:none;margin:0;padding:0;max-height:300px;overflow-y:auto}.cbx-panel li{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px}.cbx-panel li:hover,.cbx-panel li[aria-selected=true]{background:#eef4ff}.cbx-logo{width:24px;height:24px;object-fit:contain;flex-shrink:0}.cbx-logo-prazno{width:24px;height:24px;flex-shrink:0}.cbx-n{margin-left:auto;font-size:11px;color:var(--muted)}.cbx-ni{padding:12px;color:var(--muted);font-size:13px}@media(max-width:680px){.filters{grid-template-columns:1fr 1fr}.filters>*{grid-column:span 1}.filters .cbx,.filters #f-model,.filters #f-god{grid-column:1/-1}}
-#pretraga::-webkit-search-cancel-button{-webkit-appearance:none}</style>
+#pretraga::-webkit-search-cancel-button{-webkit-appearance:none}
+body{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+.topbar{padding-top:env(safe-area-inset-top)}.sadrzaj{padding-left:max(26px,env(safe-area-inset-left));padding-right:max(26px,env(safe-area-inset-right));padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+@media(max-width:680px){.sadrzaj{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}}
+.instaliraj{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#e7f0ff;border:1px solid #bad3f5;border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:13px;line-height:1.5;color:#26466f}.instaliraj[hidden]{display:none!important}.instaliraj button{border:0;border-radius:8px;padding:9px 14px;font-weight:650;font-size:13px;white-space:nowrap}.instaliraj .inst-da{background:var(--blue);color:white}.instaliraj .inst-ne{background:transparent;color:#526176;padding:9px 8px}
+</style>
 </head>
 <body>
 
@@ -43,7 +57,7 @@
     </div>
 </div>
 
-<main class="sadrzaj"><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
+<main class="sadrzaj"><div class="instaliraj" id="instaliraj" hidden><span id="instaliraj-tekst">Dodaj katalog na početni ekran i otvaraj ga kao aplikaciju.</span><span><button type="button" class="inst-da" id="instaliraj-da">Instaliraj</button><button type="button" class="inst-ne" id="instaliraj-ne" aria-label="Sakrij">✕</button></span></div><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
 
 <script>
 let katalog = [];
@@ -571,6 +585,37 @@ document.getElementById("clear").addEventListener("click",() => { document.getEl
 document.querySelectorAll(".example").forEach(btn => btn.addEventListener("click",() => { document.getElementById("pretraga").value = btn.textContent; pretrazi(); }));
 document.getElementById("more").addEventListener("click",() => { const previousCount = document.getElementById("rezultati").children.length; limit += 24; pretrazi(false); document.querySelectorAll(".btn-narudzba")[previousCount]?.focus(); });
 document.addEventListener("keydown",event => { if(!document.getElementById("izbor-overlay").classList.contains("aktivan")) return; if(event.key === "Escape") zatvoriIzbor(); if(event.key === "Tab") { const buttons = [...document.querySelectorAll(".izbor-box button")]; const first = buttons[0], last = buttons[buttons.length-1]; if(event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if(!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } });
+
+// Aplikacija na telefonu: servisni radnik + dugme "Instaliraj" (Android/Chrome) ili uputa (iPhone).
+(function () {
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+        window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+    const traka = document.getElementById("instaliraj");
+    const uAplikaciji = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    let sakriveno = false;
+    try { sakriveno = localStorage.getItem("instalacija-sakrivena") === "1"; } catch (e) {}
+    if (!traka || uAplikaciji || sakriveno) return;
+    let ponuda = null;
+    window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); ponuda = e; traka.hidden = false; });
+    window.addEventListener("appinstalled", () => { traka.hidden = true; });
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    if (ios) {
+        document.getElementById("instaliraj-tekst").textContent = "Za aplikaciju: dodirni dugme Podijeli u Safariju, pa \"Dodaj na početni ekran\".";
+        document.getElementById("instaliraj-da").hidden = true;
+        traka.hidden = false;
+    }
+    document.getElementById("instaliraj-da").addEventListener("click", async () => {
+        if (!ponuda) return;
+        ponuda.prompt();
+        await ponuda.userChoice.catch(() => {});
+        ponuda = null; traka.hidden = true;
+    });
+    document.getElementById("instaliraj-ne").addEventListener("click", () => {
+        traka.hidden = true;
+        try { localStorage.setItem("instalacija-sakrivena", "1"); } catch (e) {}
+    });
+})();
 </script>
 
 </body>
