@@ -52,25 +52,53 @@ let greska = false;
 let limit = 24;
 let prethodniFokus;
 
-fetch("katalog.json?t=" + Date.now(), { cache: "no-store" })
-    .then(r => { if (!r.ok) throw new Error("Katalog nije dostupan"); return r.json(); })
-    .then(data => {
-        if (!Array.isArray(data.artikli)) throw new Error("Neispravan katalog");
-        katalog = data.artikli.filter(d => d && typeof d === "object");
+// Adresa javne pretrage (Cloudflare Worker). Na katalog domeni je ista adresa (/api/...).
+const API = (() => {
+    const h = location.hostname;
+    if (/^(localhost|127\.0\.0\.1)$/.test(h)) return new URLSearchParams(location.search).get("api") || "";
+    return h === "katalog.autodijelovi.site" ? "" : "https://katalog.autodijelovi.site";
+})();
+let serverMod = false;
+
+function prikaziViber() {
+    if (viberBroj) {
+        document.getElementById("viber-broj-prikaz").textContent = formatViberBrojRano(viberBroj);
+        document.getElementById("viber-info").style.display = "block";
+    }
+}
+
+function pokreniStatickiKatalog() {
+    fetch("katalog.json?t=" + Date.now(), { cache: "no-store" })
+        .then(r => { if (!r.ok) throw new Error("Katalog nije dostupan"); return r.json(); })
+        .then(data => {
+            if (!Array.isArray(data.artikli)) throw new Error("Neispravan katalog");
+            katalog = data.artikli.filter(d => d && typeof d === "object");
+            ucitano = true;
+            viberBroj = String(data.viber_broj || "");
+            prikaziViber();
+            izgradiFiltere();
+            pretrazi();
+        })
+        .catch(() => {
+            greska = true;
+            document.getElementById("result-count").textContent = "Katalog nije dostupan";
+            document.getElementById("prazno").textContent = "Katalog trenutno nije dostupan. Pokušaj kasnije.";
+        });
+}
+
+// Prvo pokušaj pretragu sa servera; ako još nije uključena, koristi katalog.json.
+fetch(API + "/api/postavke", { cache: "no-store" })
+    .then(r => { if (!r.ok || !/json/.test(r.headers.get("content-type") || "")) throw new Error("bez servera"); return r.json(); })
+    .then(p => {
+        if (!p || typeof p !== "object" || !("viber_broj" in p)) throw new Error("server nije napunjen");
+        serverMod = true;
+        viberBroj = String(p.viber_broj || "");
         ucitano = true;
-        viberBroj = String(data.viber_broj || "");
-        if (viberBroj) {
-            document.getElementById("viber-broj-prikaz").textContent = formatViberBrojRano(viberBroj);
-            document.getElementById("viber-info").style.display = "block";
-        }
+        prikaziViber();
         izgradiFiltere();
         pretrazi();
     })
-    .catch(() => {
-        greska = true;
-        document.getElementById("result-count").textContent = "Katalog nije dostupan";
-        document.getElementById("prazno").textContent = "Katalog trenutno nije dostupan. Pokušaj kasnije.";
-    });
+    .catch(() => pokreniStatickiKatalog());
 
 function formatViberBrojRano(broj) {
     const cisto = (broj || "").replace(/[^0-9]/g, "");
@@ -328,10 +356,20 @@ function osvjeziMotorFiltere(zadrzi) {
     popuni(selZ, "Zapremina motora", zapremine, zapSel, val => val, (a, b) => parseFloat(a) - parseFloat(b));
     popuni(selY, "Godina", godine, godSel, val => val, (a, b) => b.localeCompare(a));
 }
+function markeIzOpisaVozila(tekst) {
+    const rez = [];
+    const dijelovi = String(tekst || "").split("·").map(x => normalizuj(x).trim()).filter(Boolean);
+    const marke = [...markeIndeks.values()].sort((a, b) => b.label.length - a.label.length);
+    dijelovi.forEach(seg => {
+        const m = marke.find(x => seg.startsWith(normalizuj(x.label)));
+        if (m) rez.push([m.label]);
+    });
+    return rez;
+}
 function markeIkonice(d) {
     const red = element("div", "brand-row");
     const vidjeno = new Set();
-    (Array.isArray(d.kompat) ? d.kompat : []).forEach(par => {
+    (Array.isArray(d.kompat) ? d.kompat : markeIzOpisaVozila(d.vozila)).forEach(par => {
         const k = kljucMarke(par[0]);
         if (!k || vidjeno.has(k) || vidjeno.size >= 3 || !logoMapa[k]) return;
         vidjeno.add(k);
@@ -406,21 +444,7 @@ document.addEventListener("keydown", event => {
     if (event.key === "ArrowLeft") lightboxKorak(-1);
     if (event.key === "ArrowRight") lightboxKorak(1);
 });
-function pretrazi(reset = true) {
-    if (reset) limit = 24;
-    const upit = document.getElementById("pretraga").value.trim();
-    document.getElementById("clear").hidden = !upit;
-    if (!ucitano || greska) return;
-    const rijeci = normalizuj(upit).split(/\s+/).filter(Boolean);
-    const fMarka = izabranaMarka, fModel = document.getElementById("f-model").value, fZap = document.getElementById("f-zap").value, fGod = document.getElementById("f-god").value;
-    const lista = katalog.filter(d => { if (!odgovaraFilteru(d, fMarka, fModel, izabranoGorivo, fZap, fGod)) return false; const text = normalizuj([d.naziv,d.kataloski_broj,d.sifra,d.proizvodjac,d.dodatni_brojevi,d.vozila].filter(Boolean).join(" ")); return rijeci.every(r => text.includes(r)); });
-    const sort = document.getElementById("sort").value;
-    lista.sort((a,b) => sort === "price-up" ? Number(a.cijena)-Number(b.cijena) : sort === "price-down" ? Number(b.cijena)-Number(a.cijena) : String(a.naziv || "").localeCompare(String(b.naziv || ""),"bs"));
-    const root = document.getElementById("rezultati"); root.replaceChildren();
-    document.getElementById("result-count").textContent = (upit ? "Rezultati pretrage" : "Svi dijelovi") + " · " + lista.length;
-    const prazno = document.getElementById("prazno"); prazno.hidden = !!lista.length;
-    prazno.textContent = upit ? "Nema rezultata za ovu pretragu. Pokušaj s drugim nazivom ili kataloškim brojem." : "Trenutno nema dijelova u katalogu.";
-    lista.slice(0,limit).forEach(d => {
+function napraviKarticu(d) {
         const card = element("article","rezultat");
         const top = element("div","rezultat-top");
         const info = element("div","rezultat-info");
@@ -437,8 +461,73 @@ function pretrazi(reset = true) {
         const button = element("button","btn-narudzba","Pošalji upit"); button.disabled = !viberBroj.replace(/[^0-9]/g,"") || !validPrice;
         if(button.disabled) button.title = "Kontakt za ovaj upit trenutno nije dostupan";
         button.addEventListener("click",() => naruci(String(d.naziv || "Dio"),d.sifra,d.kataloski_broj,Number(d.cijena)));
-        bottom.append(price,button); card.append(top,bottom); root.append(card);
-    });
+        bottom.append(price,button); card.append(top,bottom); return card;
+}
+
+let serverArtikli = [], serverUkupno = 0, serverTacno = true, serverMoreMoguce = false, serverUpitId = 0, serverTimer = null;
+function pretraziServer(reset) {
+    clearTimeout(serverTimer);
+    serverTimer = setTimeout(() => posaljiUpit(reset), reset ? 220 : 0);
+}
+async function posaljiUpit(reset) {
+    const id = ++serverUpitId;
+    if (reset) serverArtikli = [];
+    const upit = document.getElementById("pretraga").value.trim();
+    const p = new URLSearchParams();
+    if (upit) p.set("q", upit);
+    if (izabranaMarka) {
+        p.set("marka", izabranaMarka);
+        const model = document.getElementById("f-model").value, zap = document.getElementById("f-zap").value, god = document.getElementById("f-god").value;
+        if (model) p.set("model", model);
+        if (izabranoGorivo) p.set("gorivo", izabranoGorivo);
+        if (zap) p.set("zap", zap);
+        if (god) p.set("god", god);
+    }
+    p.set("sort", document.getElementById("sort").value);
+    p.set("offset", String(serverArtikli.length));
+    try {
+        const r = await fetch(API + "/api/trazi?" + p.toString());
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const d = await r.json();
+        if (id !== serverUpitId) return;
+        if (reset) { serverUkupno = d.ukupno || 0; serverTacno = d.ukupnoTacno !== false; }
+        serverArtikli = serverArtikli.concat((d.artikli || []).map(a => ({ ...a, slike_urls: a.slike || [] })));
+        serverMoreMoguce = (d.artikli || []).length >= (d.poStranici || 24);
+        prikaziServerRezultate(upit);
+    } catch (e) {
+        if (id !== serverUpitId) return;
+        document.getElementById("result-count").textContent = "Pretraga nije dostupna";
+        document.getElementById("rezultati").replaceChildren();
+        const prazno = document.getElementById("prazno"); prazno.hidden = false;
+        prazno.textContent = "Pretraga trenutno nije dostupna. Pokušaj kasnije.";
+        document.getElementById("more").hidden = true;
+    }
+}
+function prikaziServerRezultate(upit) {
+    const root = document.getElementById("rezultati"); root.replaceChildren();
+    const broj = serverTacno ? String(serverUkupno) : serverUkupno + "+";
+    document.getElementById("result-count").textContent = (upit || izabranaMarka ? "Rezultati pretrage" : "Svi dijelovi") + " · " + broj;
+    const prazno = document.getElementById("prazno"); prazno.hidden = !!serverArtikli.length;
+    prazno.textContent = (upit || izabranaMarka) ? "Nema rezultata za ovu pretragu. Pokušaj s drugim nazivom ili kataloškim brojem." : "Trenutno nema dijelova u katalogu.";
+    serverArtikli.forEach(d => root.append(napraviKarticu(d)));
+    document.getElementById("more").hidden = !serverMoreMoguce;
+}
+function pretrazi(reset = true) {
+    if (reset) limit = 24;
+    const upit = document.getElementById("pretraga").value.trim();
+    document.getElementById("clear").hidden = !upit;
+    if (!ucitano || greska) return;
+    if (serverMod) { pretraziServer(reset); return; }
+    const rijeci = normalizuj(upit).split(/\s+/).filter(Boolean);
+    const fMarka = izabranaMarka, fModel = document.getElementById("f-model").value, fZap = document.getElementById("f-zap").value, fGod = document.getElementById("f-god").value;
+    const lista = katalog.filter(d => { if (!odgovaraFilteru(d, fMarka, fModel, izabranoGorivo, fZap, fGod)) return false; const text = normalizuj([d.naziv,d.kataloski_broj,d.sifra,d.proizvodjac,d.dodatni_brojevi,d.vozila].filter(Boolean).join(" ")); return rijeci.every(r => text.includes(r)); });
+    const sort = document.getElementById("sort").value;
+    lista.sort((a,b) => sort === "price-up" ? Number(a.cijena)-Number(b.cijena) : sort === "price-down" ? Number(b.cijena)-Number(a.cijena) : String(a.naziv || "").localeCompare(String(b.naziv || ""),"bs"));
+    const root = document.getElementById("rezultati"); root.replaceChildren();
+    document.getElementById("result-count").textContent = (upit ? "Rezultati pretrage" : "Svi dijelovi") + " · " + lista.length;
+    const prazno = document.getElementById("prazno"); prazno.hidden = !!lista.length;
+    prazno.textContent = upit ? "Nema rezultata za ovu pretragu. Pokušaj s drugim nazivom ili kataloškim brojem." : "Trenutno nema dijelova u katalogu.";
+    lista.slice(0,limit).forEach(d => root.append(napraviKarticu(d)));
     document.getElementById("more").hidden = lista.length <= limit;
 }
 document.getElementById("pretraga").addEventListener("input",() => pretrazi());
