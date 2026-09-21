@@ -82,6 +82,13 @@ body.lista-mod .search-panel .examples{display:none}
 body.lista-mod #rezultati{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(min-width:1400px){body.lista-mod #rezultati{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.marke-podnaslov{font-size:14px;font-weight:650;color:var(--muted);margin:22px 0 10px}
+.marke-tiles--ostale .marka-plocica{background:#f7f9fc;padding:12px 8px 10px;font-weight:600;color:#6b7c93}
+.marke-tiles--ostale .marka-plocica .plocica-logo{opacity:.55;filter:grayscale(1);width:34px;height:34px}
+.marke-tiles--ostale .marka-plocica small{color:#93a1b6}
+.plocica-inicijal{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#e8edf5;color:#7a8ba3;font-weight:700;font-size:14px}
+.prazno-marka .btn-narudzba{margin-top:14px;padding:12px 18px;font-size:13px}
 </style>
 </head>
 <body>
@@ -108,7 +115,7 @@ body.lista-mod #rezultati{grid-template-columns:repeat(2,minmax(0,1fr))}
     </div>
 </div>
 
-<main class="sadrzaj"><div class="instaliraj" id="instaliraj" hidden><span id="instaliraj-tekst">Dodaj katalog na početni ekran i otvaraj ga kao aplikaciju.</span><span><button type="button" class="inst-da" id="instaliraj-da">Instaliraj</button><button type="button" class="inst-ne" id="instaliraj-ne" aria-label="Sakrij">✕</button></span></div><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="marke-sekcija" id="marke-mreza" hidden><div class="marke-naslov">Dostupne marke vozila</div><p class="marke-opis">Izaberi marku, pa filtriraj po modelu i dijelu.</p><div class="marke-tiles" id="marke-tiles"></div></section><section class="search-panel" aria-label="Pretraga kataloga"><button type="button" class="filteri-toggle" id="filteri-toggle" aria-expanded="true"><span>Filteri vozila</span><small id="filteri-sazetak"></small><span aria-hidden="true">▾</span></button><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><section class="dio-detalj" id="dio-detalj" hidden></section><div class="results-bar"><div class="rb-lijevo"><button type="button" class="sve-marke" id="sve-marke" hidden>← Sve marke</button><b id="result-count" role="status">Učitavanje kataloga…</b></div><div class="rb-desno"><span class="pogled" id="pogled"><button type="button" id="pogled-mreza" aria-label="Prikaži kao mrežu" title="Mreža"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button><button type="button" id="pogled-lista" aria-label="Prikaži kao listu" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button></span><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
+<main class="sadrzaj"><div class="instaliraj" id="instaliraj" hidden><span id="instaliraj-tekst">Dodaj katalog na početni ekran i otvaraj ga kao aplikaciju.</span><span><button type="button" class="inst-da" id="instaliraj-da">Instaliraj</button><button type="button" class="inst-ne" id="instaliraj-ne" aria-label="Sakrij">✕</button></span></div><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="marke-sekcija" id="marke-mreza" hidden><div class="marke-naslov">Dostupne marke vozila</div><p class="marke-opis">Izaberi marku, pa filtriraj po modelu i dijelu.</p><div class="marke-tiles" id="marke-tiles"></div><div class="marke-podnaslov" id="marke-ostale-naslov" hidden>Ostale marke vozila <span style="font-weight:500">(trenutno nemamo dijelova, pošalji upit)</span></div><div class="marke-tiles marke-tiles--ostale" id="marke-tiles-ostale"></div></section><section class="search-panel" aria-label="Pretraga kataloga"><button type="button" class="filteri-toggle" id="filteri-toggle" aria-expanded="true"><span>Filteri vozila</span><small id="filteri-sazetak"></small><span aria-hidden="true">▾</span></button><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><section class="dio-detalj" id="dio-detalj" hidden></section><div class="results-bar"><div class="rb-lijevo"><button type="button" class="sve-marke" id="sve-marke" hidden>← Sve marke</button><b id="result-count" role="status">Učitavanje kataloga…</b></div><div class="rb-desno"><span class="pogled" id="pogled"><button type="button" id="pogled-mreza" aria-label="Prikaži kao mrežu" title="Mreža"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button><button type="button" id="pogled-lista" aria-label="Prikaži kao listu" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button></span><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
 
 <script>
 let katalog = [];
@@ -450,6 +457,7 @@ function izgradiFiltere() {
     azurirajDugmeMarke();
     osvjeziModele();
     osvjeziMotorFiltere(false);
+    if (serverMod && markeBrojevi) prikaziPlocice();
     if (!urlPrimijenjen && serverMod && vozilaKatalog) { urlPrimijenjen = true; primijeniUrl(); }
 }
 function prikaziListuMarki() {
@@ -789,6 +797,17 @@ function prikaziServerRezultate(upit) {
     document.getElementById("result-count").textContent = tekstNaslova;
     const prazno = document.getElementById("prazno"); prazno.hidden = !!serverArtikli.length;
     prazno.textContent = (upit || izabranaMarka || bezVozila) ? "Nema rezultata za ovu pretragu. Pokušaj s drugim nazivom ili kataloškim brojem." : "Trenutno nema dijelova u katalogu.";
+    if (!serverArtikli.length && izabranaMarka && bezFiltera && markeBrojevi && !markeBrojevi[izabranaMarka]) {
+        const ime = nazivMarke(izabranaMarka);
+        prazno.classList.add("prazno-marka");
+        prazno.replaceChildren(document.createTextNode("Trenutno nemamo dijelova za " + ime + ". Pošalji upit i javit ćemo ti čim ih imamo."), document.createElement("br"));
+        const dugme = element("button", "btn-narudzba", "Pošalji upit za " + ime);
+        dugme.type = "button";
+        dugme.addEventListener("click", () => upitOpsti("Zdravo, tražim dio za vozilo " + ime + ". Da li imate?"));
+        prazno.appendChild(dugme);
+    } else {
+        prazno.classList.remove("prazno-marka");
+    }
     serverArtikli.forEach(d => root.append(napraviKarticu(d)));
     document.getElementById("more").hidden = !serverMoreMoguce;
 }
@@ -819,18 +838,29 @@ async function ucitajMarke() {
     pretrazi();
 }
 function prikaziPlocice() {
-    const kutija = document.getElementById("marke-tiles");
-    kutija.replaceChildren();
+    const kutija = document.getElementById("marke-tiles"), ostale = document.getElementById("marke-tiles-ostale");
+    kutija.replaceChildren(); ostale.replaceChildren();
+    document.getElementById("marke-ostale-naslov").hidden = true;
     if (!markeBrojevi) return;
-    Object.entries(markeBrojevi).filter(([k, n]) => n > 0)
-        .sort((a, b) => nazivMarke(a[0]).localeCompare(nazivMarke(b[0]), "bs"))
-        .forEach(([k, n]) => {
-            const b = document.createElement("button");
-            b.type = "button"; b.className = "marka-plocica";
-            b.append(logoElement(k, nazivMarke(k), "plocica-logo"), element("span", "", nazivMarke(k)), element("small", "", brojDijelova(n)));
-            b.addEventListener("click", () => izaberiMarku(k));
-            kutija.append(b);
-        });
+    const izReference = markeIndeks.size > 0;
+    // Sve marke iz reference vozila (kao kod konkurencije); podaci o markama koje nisu u referenci (npr. pogrešno upisane) se zanemaruju.
+    const kljucevi = izReference ? [...markeIndeks.keys()] : Object.keys(markeBrojevi);
+    const sve = kljucevi.map(k => ({ k, ime: nazivMarke(k), n: markeBrojevi[k] || 0 }));
+    const poImenu = (a, b) => a.ime.localeCompare(b.ime, "bs");
+    const dostupne = sve.filter(x => x.n > 0).sort(poImenu);
+    const nedostupne = izReference ? sve.filter(x => x.n === 0).sort(poImenu) : [];
+    const napravi = (x, sivo) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "marka-plocica";
+        let logo;
+        if (logoMapa[x.k]) logo = logoElement(x.k, x.ime, "plocica-logo");
+        else logo = sivo ? element("span", "plocica-inicijal", x.ime.charAt(0).toUpperCase()) : logoElement(x.k, x.ime, "plocica-logo");
+        b.append(logo, element("span", "", x.ime));
+        if (!sivo) b.append(element("small", "", brojDijelova(x.n)));
+        b.addEventListener("click", () => izaberiMarku(x.k));
+        return b;
+    };
+    dostupne.forEach(x => kutija.append(napravi(x, false)));
     if (ostaloBroj > 0) {
         const b = document.createElement("button");
         b.type = "button"; b.className = "marka-plocica";
@@ -840,6 +870,19 @@ function prikaziPlocice() {
         b.addEventListener("click", () => { izabranaMarka = ""; bezVozila = true; azurirajDugmeMarke(); osvjeziModele(); osvjeziMotorFiltere(false); pretrazi(); });
         kutija.append(b);
     }
+    nedostupne.forEach(x => ostale.append(napravi(x, true)));
+    document.getElementById("marke-ostale-naslov").hidden = nedostupne.length === 0;
+}
+// Opšti upit (bez konkretnog dijela): otvara isti izbor Viber/WhatsApp.
+function upitOpsti(tekst) {
+    if (!viberBroj.replace(/[^0-9]/g, "")) { prikaziToast("Kontakt trenutno nije dostupan."); return; }
+    prethodniFokus = document.activeElement;
+    cekaTekst = tekst;
+    cekaBroj = viberBroj.replace(/[^0-9]/g, "");
+    const izborBox = document.querySelector("#izbor-overlay .izbor-box");
+    if (izborIzvorniHtml !== null) izborBox.innerHTML = izborIzvorniHtml;
+    document.getElementById("izbor-overlay").classList.add("aktivan");
+    document.querySelector(".izbor-btn").focus();
 }
 // Vraća true ako treba prikazati listu (marka, univerzalni dijelovi ili upisan tekst), false za početnu sa pločicama.
 function azurirajNacin() {
