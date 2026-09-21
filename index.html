@@ -31,6 +31,24 @@ body{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
 .topbar{padding-top:env(safe-area-inset-top)}.sadrzaj{padding-left:max(26px,env(safe-area-inset-left));padding-right:max(26px,env(safe-area-inset-right));padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 @media(max-width:680px){.sadrzaj{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}}
 .instaliraj{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#e7f0ff;border:1px solid #bad3f5;border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:13px;line-height:1.5;color:#26466f}.instaliraj[hidden]{display:none!important}.instaliraj button{border:0;border-radius:8px;padding:9px 14px;font-weight:650;font-size:13px;white-space:nowrap}.instaliraj .inst-da{background:var(--blue);color:white}.instaliraj .inst-ne{background:transparent;color:#526176;padding:9px 8px}
+
+.rezultat-naziv a{color:inherit;text-decoration:none}.rezultat-naziv a:hover{color:var(--blue);text-decoration:underline}
+.rezultat-akcije{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn-link{background:#f4f7fb;color:#41546f;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600;white-space:nowrap}.btn-link:hover{border-color:#bad3f5;color:var(--blue)}
+body.dio-mod .intro,body.dio-mod .search-panel,body.dio-mod .results-bar,body.dio-mod #rezultati,body.dio-mod #prazno,body.dio-mod #more,body.dio-mod #instaliraj{display:none!important}
+.dio-detalj{background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 5px 20px #23395205}
+.dio-nazad{display:inline-flex;align-items:center;gap:6px;color:var(--blue);text-decoration:none;font-weight:600;font-size:13px;margin-bottom:16px}
+.dio-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px}
+.dio-galerija-glavna{width:100%;aspect-ratio:4/3;border:1px solid var(--line);border-radius:12px;background:#eef2f8;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;color:#b7c2d1;font-size:46px}
+.dio-galerija-glavna img{width:100%;height:100%;object-fit:contain;display:block}
+.dio-mini{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.dio-mini button{width:64px;height:64px;padding:0;border:2px solid var(--line);border-radius:9px;overflow:hidden;background:#eef2f8}.dio-mini button.izabrana{border-color:var(--blue)}.dio-mini img{width:100%;height:100%;object-fit:cover;display:block}
+.dio-detalj h1{font-size:clamp(22px,3vw,30px);letter-spacing:-.6px;margin:6px 0 10px;overflow-wrap:anywhere}
+.dio-cijena{font-size:30px;font-weight:800;letter-spacing:-.8px;margin:14px 0 2px}.dio-cijena-nota{font-size:11px;color:var(--muted)}
+.dio-tabela{display:grid;grid-template-columns:130px minmax(0,1fr);gap:8px 12px;margin:18px 0;font-size:13px}.dio-tabela dt{color:var(--muted)}.dio-tabela dd{margin:0;overflow-wrap:anywhere}
+.dio-vozila{margin:6px 0 0;padding-left:18px;font-size:13px;line-height:1.7}
+.dio-akcije{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.dio-akcije .btn-narudzba{padding:14px 20px;font-size:14px}.dio-akcije .btn-link{padding:14px 16px;font-size:13px}
+.dio-nedostupno{text-align:center;padding:40px 10px;color:var(--muted);line-height:1.7}.dio-nedostupno a{color:var(--blue);font-weight:600}
+@media(max-width:760px){.dio-grid{grid-template-columns:1fr;gap:18px}.dio-detalj{padding:16px}.dio-tabela{grid-template-columns:110px minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -57,7 +75,7 @@ body{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
     </div>
 </div>
 
-<main class="sadrzaj"><div class="instaliraj" id="instaliraj" hidden><span id="instaliraj-tekst">Dodaj katalog na početni ekran i otvaraj ga kao aplikaciju.</span><span><button type="button" class="inst-da" id="instaliraj-da">Instaliraj</button><button type="button" class="inst-ne" id="instaliraj-ne" aria-label="Sakrij">✕</button></span></div><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
+<main class="sadrzaj"><div class="instaliraj" id="instaliraj" hidden><span id="instaliraj-tekst">Dodaj katalog na početni ekran i otvaraj ga kao aplikaciju.</span><span><button type="button" class="inst-da" id="instaliraj-da">Instaliraj</button><button type="button" class="inst-ne" id="instaliraj-ne" aria-label="Sakrij">✕</button></span></div><section class="intro"><div><span class="eyebrow">DIJELOVI ZA TVOJE VOZILO</span><h1>Pronađi pravi dio.</h1><p>Pretraži katalog, provjeri cijenu i pošalji upit u nekoliko koraka.</p></div><div class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div></section><section class="search-panel" aria-label="Pretraga kataloga"><div class="search-label" id="vozilo-label">1. Za koje vozilo? <span class="opciono">(marka, model, tip)</span></div><div class="filters"><div class="cbx" id="marka-cbx"><button type="button" class="cbx-btn" id="marka-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cbx-btn-txt" id="marka-btn-txt">Sve marke</span><span aria-hidden="true">▾</span></button><div class="cbx-panel" id="marka-panel" hidden><input type="search" id="marka-trazi" placeholder="Traži marku…" autocomplete="off" aria-label="Traži marku"><ul id="marka-lista" role="listbox" aria-label="Marke vozila"></ul></div></div><select id="f-model" aria-label="Model vozila" disabled><option value="">Prvo izaberi marku</option></select><select id="f-gorivo" aria-label="Vrsta goriva" disabled><option value="">Gorivo</option></select><select id="f-zap" aria-label="Zapremina motora" disabled><option value="">Zapremina motora</option></select><select id="f-god" aria-label="Godina proizvodnje" disabled><option value="">Godina</option></select></div><label class="search-label" for="pretraga">2. Koji dio tražiš?</label><div class="pretraga-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="pretraga" placeholder="Naziv dijela, kataloški broj ili šifra…" aria-describedby="search-hint" autocomplete="off"><button class="clear" id="clear" aria-label="Očisti pretragu" hidden>×</button></div><p class="hint" id="search-hint">Prvo izaberi vozilo, pa upiši dio. Kataloški broj možeš tražiti i bez vozila.</p><div class="examples"><span>Primjeri pretrage</span><button class="example">Filter ulja</button><button class="example">Audi A6</button><button class="example">Golf 5</button></div></section><section class="dio-detalj" id="dio-detalj" hidden></section><div class="results-bar"><b id="result-count" role="status">Učitavanje kataloga…</b><select id="sort" aria-label="Poredaj dijelove"><option value="name">Naziv: A–Ž</option><option value="price-up">Cijena: niža prvo</option><option value="price-down">Cijena: viša prvo</option></select></div><div id="rezultati"></div><div id="prazno" class="prazno" role="status">Učitavanje kataloga…</div><button id="more" class="more" hidden>Prikaži još dijelova</button><footer class="footer"><span>AutoDijelovi · Javni katalog</span><span>Cijene su u KM, s PDV-om. Dostupnost potvrđujemo pri upitu.</span><span>Podaci o vozilima: autoevolution.com, projekt vehicle-makes-models (ODbL).</span></footer></main><div class="toast" id="toast" role="status"></div>
 
 <script>
 let katalog = [];
@@ -101,7 +119,95 @@ function pokreniStatickiKatalog() {
         });
 }
 
+
+// ---------- Stranica jednog dijela (/dio/123-naziv): podaci stižu ugrađeni iz Workera ----------
+function pokreniDio(podaci) {
+    document.body.classList.add("dio-mod");
+    serverMod = true;
+    viberBroj = String((podaci && podaci.viber) || "");
+    prikaziViber();
+    ucitano = true;
+    const sekcija = document.getElementById("dio-detalj");
+    sekcija.hidden = false;
+    sekcija.replaceChildren();
+    const nazad = document.createElement("a");
+    nazad.className = "dio-nazad"; nazad.href = "/"; nazad.textContent = "← Svi dijelovi";
+    sekcija.appendChild(nazad);
+    const d = podaci && podaci.dio;
+    if (!d) {
+        const kutija = element("div", "dio-nedostupno");
+        kutija.innerHTML = "Ovaj dio više nije dostupan (vjerovatno je prodan).<br>Pogledaj druge dijelove u <a href=\"/\">katalogu</a> ili nam pošalji upit.";
+        sekcija.appendChild(kutija);
+        return;
+    }
+    d.slike_urls = Array.isArray(d.slike) ? d.slike : [];
+    const poDogovoru = !!d.po_dogovoru;
+    const validPrice = !poDogovoru && d.cijena !== null && d.cijena !== undefined && Number.isFinite(Number(d.cijena));
+
+    const grid = element("div", "dio-grid");
+    // Galerija
+    const lijevo = document.createElement("div");
+    const glavna = element("button", "dio-galerija-glavna");
+    glavna.type = "button";
+    const slike = d.slike_urls;
+    let izabrana = 0;
+    const osvjezi = () => {
+        glavna.replaceChildren();
+        if (slike.length) {
+            const im = document.createElement("img"); im.src = slike[izabrana]; im.alt = d.naziv || "";
+            im.onerror = () => { glavna.textContent = "▧"; };
+            glavna.appendChild(im);
+        } else glavna.textContent = "▧";
+        mini.querySelectorAll("button").forEach((b, i) => b.classList.toggle("izabrana", i === izabrana));
+    };
+    const mini = element("div", "dio-mini");
+    slike.forEach((url, i) => {
+        const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", "Slika " + (i + 1));
+        const im = document.createElement("img"); im.src = url; im.alt = ""; im.loading = "lazy"; im.onerror = () => b.remove();
+        b.appendChild(im); b.addEventListener("click", () => { izabrana = i; osvjezi(); });
+        mini.appendChild(b);
+    });
+    glavna.addEventListener("click", () => { if (slike.length) otvoriLightbox(slike, d.naziv || "Dio"); });
+    lijevo.append(glavna); if (slike.length > 1) lijevo.append(mini);
+    osvjezi();
+
+    // Podaci
+    const desno = document.createElement("div");
+    desno.append(element("div", "part-brand", d.proizvodjac || "Auto dijelovi"));
+    const naslov = document.createElement("h1"); naslov.textContent = d.naziv || "Dio"; desno.append(naslov);
+    desno.append(markeIkonice({ ...d, kompat: undefined }));
+    desno.append(element("div", "dio-cijena", poDogovoru ? "Po dogovoru" : validPrice ? formatBroj(d.cijena) + " KM" : "Na upit"));
+    if (validPrice) desno.append(element("div", "dio-cijena-nota", "Cijena s PDV-om"));
+    const tabela = document.createElement("dl"); tabela.className = "dio-tabela";
+    const red = (k, v) => { if (!v) return; tabela.append(element("dt", "", k), element("dd", "", v)); };
+    red("Stanje", d.stanje === "novo" ? "Novo" : d.stanje === "polovno" ? "Polovno" : "");
+    red("Dostupnost", Number(d.kolicina) > 0 ? "Na stanju · " + d.kolicina + " kom" : "Provjeri dostupnost");
+    red("Šifra", d.sifra);
+    red("Kataloški broj", d.kataloski_broj);
+    red("OEM / dodatni brojevi", d.dodatni_brojevi);
+    desno.append(tabela);
+    const vozila = String(d.vozila || "").split(" · ").map(x => x.trim()).filter(Boolean);
+    if (vozila.length) {
+        desno.append(element("div", "rezultat-meta", "Kompatibilna vozila:"));
+        const ul = document.createElement("ul"); ul.className = "dio-vozila";
+        vozila.slice(0, 20).forEach(v => { const li = document.createElement("li"); li.textContent = v; ul.appendChild(li); });
+        desno.append(ul);
+    }
+    const akcije = element("div", "dio-akcije");
+    const upit = element("button", "btn-narudzba", "Pošalji upit");
+    upit.type = "button"; upit.disabled = !viberBroj.replace(/[^0-9]/g, "") || (!validPrice && !poDogovoru);
+    upit.addEventListener("click", () => naruci(String(d.naziv || "Dio"), d.sifra, d.kataloski_broj, Number(d.cijena), dioLink(d), poDogovoru));
+    const kopiraj = element("button", "btn-link", "🔗 Kopiraj link");
+    kopiraj.type = "button"; kopiraj.addEventListener("click", () => kopirajLink(d));
+    akcije.append(upit, kopiraj);
+    desno.append(akcije);
+
+    grid.append(lijevo, desno);
+    sekcija.appendChild(grid);
+}
+
 // Prvo pokušaj pretragu sa servera; ako još nije uključena, koristi katalog.json.
+if (window.__DIO) { setTimeout(() => pokreniDio(window.__DIO), 0); } else
 fetch(API + "/api/postavke", { cache: "no-store" })
     .then(r => { if (!r.ok || !/json/.test(r.headers.get("content-type") || "")) throw new Error("bez servera"); return r.json(); })
     .then(p => {
@@ -138,14 +244,15 @@ function prikaziToast(tekst) {
 let cekaTekst = "";
 let cekaBroj = "";
 
-function naruci(naziv, sifra, kataloski, cijena) {
+function naruci(naziv, sifra, kataloski, cijena, link, poDogovoru) {
     if (!viberBroj.replace(/[^0-9]/g, "")) return;
     prethodniFokus = document.activeElement;
     let oznake = [];
     if (sifra) oznake.push("šifra: " + sifra);
     if (kataloski) oznake.push("kat. broj: " + kataloski);
     const oznakeTxt = oznake.length ? " (" + oznake.join(", ") + ")" : "";
-    cekaTekst = `Zdravo, zanima me dio: ${naziv}${oznakeTxt} — cijena ${formatBroj(cijena)} KM. Da li je dostupan?`;
+    const cijenaTxt = poDogovoru || !Number.isFinite(Number(cijena)) ? "cijena po dogovoru" : `cijena ${formatBroj(cijena)} KM`;
+    cekaTekst = `Zdravo, zanima me dio: ${naziv}${oznakeTxt} — ${cijenaTxt}. Da li je dostupan?` + (link ? `\n${link}` : "");
     cekaBroj = viberBroj.replace(/[^0-9]/g, "");
     document.getElementById("izbor-overlay").classList.add("aktivan");
     document.querySelector(".izbor-btn").focus();
@@ -395,6 +502,41 @@ function markeIkonice(d) {
     });
     return red;
 }
+function slugNaziv(naziv) {
+    return String(naziv || "").toLowerCase().replace(/đ/g, "dj").normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60).replace(/-+$/g, "");
+}
+function dioLink(d) {
+    if (!d || !d.id || !serverMod) return "";
+    return location.origin + "/dio/" + d.id + "-" + slugNaziv(d.naziv);
+}
+async function kopirajLink(d) {
+    const link = dioLink(d);
+    if (!link) return;
+    try {
+        if (navigator.share && /Android|iPhone|iPad|Mobi/i.test(navigator.userAgent)) {
+            await navigator.share({ title: d.naziv || "Dio", url: link });
+            return;
+        }
+        await navigator.clipboard.writeText(link);
+        prikaziToast("Link je kopiran.");
+    } catch (e) {
+        if (e && e.name === "AbortError") return;
+        window.prompt("Kopiraj link:", link);
+    }
+}
+function nazivElement(d) {
+    const el = element("div", "rezultat-naziv");
+    const link = dioLink(d);
+    if (link) {
+        const a = document.createElement("a");
+        a.href = link; a.textContent = d.naziv || "Dio";
+        el.appendChild(a);
+    } else {
+        el.textContent = d.naziv || "Dio";
+    }
+    return el;
+}
 function element(tag, cls, text) { const el = document.createElement(tag); el.className = cls; if (text !== undefined) el.textContent = text; return el; }
 function normalizuj(tekst) { return String(tekst || "").toLowerCase().replace(/đ/g,"dj").normalize("NFD").replace(/[̀-ͯ]/g, ""); }
 function slikaElement(d) {
@@ -463,20 +605,26 @@ function napraviKarticu(d) {
         const card = element("article","rezultat");
         const top = element("div","rezultat-top");
         const info = element("div","rezultat-info");
-        info.append(element("div","part-brand",d.proizvodjac || "Auto dijelovi"),element("div","rezultat-naziv",d.naziv || "Dio"));
+        info.append(element("div","part-brand",d.proizvodjac || "Auto dijelovi"),nazivElement(d));
         const meta = []; if(d.sifra) meta.push("Šifra: " + d.sifra); if(d.kataloski_broj) meta.push("Kat. broj: " + d.kataloski_broj);
         if(meta.length) info.append(element("div","rezultat-meta",meta.join(" · ")));
         if(d.dodatni_brojevi) info.append(element("div","rezultat-meta","OEM / Alt: " + d.dodatni_brojevi));
         if(d.vozila) info.append(element("div","rezultat-meta","Vozila: " + d.vozila));
+        if(d.stanje) info.append(element("div","rezultat-meta","Stanje: " + (d.stanje === "novo" ? "novo" : "polovno")));
         info.append(element("div","rezultat-stanje",Number(d.kolicina)>0 ? "✓ Na stanju · " + d.kolicina + " kom" : "Provjeri dostupnost"));
         const lijevo = element("div","rezultat-lijevo"); lijevo.append(slikaElement(d), markeIkonice(d)); top.append(lijevo, info);
         const bottom = element("div","rezultat-bottom"); const price = element("div","");
-        const validPrice = d.cijena !== null && d.cijena !== undefined && Number.isFinite(Number(d.cijena));
-        price.append(element("div","rezultat-cijena",validPrice ? formatBroj(d.cijena) + " KM" : "Na upit"),element("div","tax-note",validPrice ? "Cijena s PDV-om" : ""));
-        const button = element("button","btn-narudzba","Pošalji upit"); button.disabled = !viberBroj.replace(/[^0-9]/g,"") || !validPrice;
+        const poDogovoru = !!d.po_dogovoru;
+        const linkDijela = dioLink(d);
+        const validPrice = !poDogovoru && d.cijena !== null && d.cijena !== undefined && Number.isFinite(Number(d.cijena));
+        price.append(element("div","rezultat-cijena",poDogovoru ? "Po dogovoru" : validPrice ? formatBroj(d.cijena) + " KM" : "Na upit"),element("div","tax-note",validPrice ? "Cijena s PDV-om" : ""));
+        const button = element("button","btn-narudzba","Pošalji upit"); button.disabled = !viberBroj.replace(/[^0-9]/g,"") || (!validPrice && !poDogovoru);
         if(button.disabled) button.title = "Kontakt za ovaj upit trenutno nije dostupan";
-        button.addEventListener("click",() => naruci(String(d.naziv || "Dio"),d.sifra,d.kataloski_broj,Number(d.cijena)));
-        bottom.append(price,button); card.append(top,bottom); return card;
+        button.addEventListener("click",() => naruci(String(d.naziv || "Dio"),d.sifra,d.kataloski_broj,Number(d.cijena),linkDijela,poDogovoru));
+        const akcije = element("div","rezultat-akcije");
+        if (linkDijela) { const lb = element("button","btn-link","🔗"); lb.type = "button"; lb.title = "Kopiraj link ovog dijela"; lb.setAttribute("aria-label", "Kopiraj link ovog dijela"); lb.addEventListener("click",() => kopirajLink(d)); akcije.append(lb); }
+        akcije.append(button);
+        bottom.append(price,akcije); card.append(top,bottom); return card;
 }
 
 let serverArtikli = [], serverMoreMoguce = false, serverUpitId = 0, serverTimer = null, serverPosljednjiTekst = "";

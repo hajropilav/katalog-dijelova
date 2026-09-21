@@ -1,8 +1,8 @@
 // Servisni radnik: aplikacija se otvara odmah (i bez mreže), a pretraga uvijek ide na server.
 // Povećaj VERZIJA kad se promijeni index.html da se stari keš odbaci.
-const VERZIJA = "v1";
+const VERZIJA = "v3";
 const KES = "autodijelovi-" + VERZIJA;
-const LJUSKA = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
+const LJUSKA = ["/", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(KES).then((k) => k.addAll(LJUSKA)).then(() => self.skipWaiting()));
@@ -27,11 +27,16 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(
       fetch(r)
         .then((odg) => {
-          const kopija = odg.clone();
-          caches.open(KES).then((k) => k.put("index.html", kopija));
+          // Pamti se samo početna stranica ("/"); stranice pojedinih dijelova (/dio/...) se ne stavljaju u keš.
+          if (odg.ok && url.pathname === "/") {
+            const kopija = odg.clone();
+            caches.open(KES).then((k) => k.put("/", kopija));
+          }
           return odg;
         })
-        .catch(() => caches.match("index.html").then((c) => c || caches.match("./")))
+        .catch(() => (url.pathname === "/"
+          ? caches.match("/")
+          : new Response('<!DOCTYPE html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="font-family:system-ui;text-align:center;padding:40px"><h2>Nema veze</h2><p>Provjeri internet pa pokušaj ponovo.</p><p><a href="/">Otvori katalog</a></p>', { status: 503, headers: { "Content-Type": "text/html; charset=utf-8" } })))
     );
     return;
   }
