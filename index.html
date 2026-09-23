@@ -28,6 +28,7 @@
 .cbx{position:relative;min-width:0}.cbx-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fbfcfe;border:1px solid #cdd9e8;border-radius:10px;padding:13px 12px;color:var(--ink);font-size:15px;text-align:left}.cbx-btn-txt{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cbx-panel{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:60;background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px #16233626;padding:8px}.cbx-panel input{width:100%;border:1px solid #cdd9e8;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:6px}.cbx-panel ul{list-style:none;margin:0;padding:0;max-height:300px;overflow-y:auto}.cbx-panel li{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px}.cbx-panel li:hover,.cbx-panel li[aria-selected=true]{background:#eef4ff}.cbx-logo{width:24px;height:24px;object-fit:contain;flex-shrink:0}.cbx-logo-prazno{width:24px;height:24px;flex-shrink:0}.cbx-n{margin-left:auto;font-size:11px;color:var(--muted)}.cbx-ni{padding:12px;color:var(--muted);font-size:13px}@media(max-width:680px){.filters{grid-template-columns:1fr 1fr}.filters>*{grid-column:span 1}.filters .cbx,.filters #f-model,.filters #f-god{grid-column:1/-1}}
 #pretraga::-webkit-search-cancel-button{-webkit-appearance:none}
 body{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+.topbar.obojeno .contact,.topbar.obojeno .brand small{color:inherit;opacity:.85}.topbar.obojeno .contact strong{color:inherit}.topbar.obojeno .brand-mark{background:var(--zg-znak,#fff);color:var(--zg-znak-tekst,#1d2a3d);box-shadow:none}.brand-logo-img{width:46px;height:46px;object-fit:contain;border-radius:10px;background:#fff;padding:3px}.contact-blok{display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.contact-blok .contact{line-height:1.6}.obavijest{padding:8px 26px;font-size:13px;text-align:center}@media(max-width:680px){.obavijest{padding:8px 18px;font-size:12px}.contact-blok{gap:4px 14px;justify-content:flex-start}.topbar-inner{flex-wrap:wrap}.brand-logo-img{width:40px;height:40px}}
 .topbar{padding-top:env(safe-area-inset-top)}.sadrzaj{padding-left:max(26px,env(safe-area-inset-left));padding-right:max(26px,env(safe-area-inset-right));padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 @media(max-width:680px){.sadrzaj{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}}
 .instaliraj{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#e7f0ff;border:1px solid #bad3f5;border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:13px;line-height:1.5;color:#26466f}.instaliraj[hidden]{display:none!important}.instaliraj button{border:0;border-radius:8px;padding:9px 14px;font-weight:650;font-size:13px;white-space:nowrap}.instaliraj .inst-da{background:var(--blue);color:white}.instaliraj .inst-ne{background:transparent;color:#526176;padding:9px 8px}
@@ -93,7 +94,7 @@ body.lista-mod #rezultati{grid-template-columns:repeat(2,minmax(0,1fr))}
 </head>
 <body>
 
-<header class="topbar"><div class="topbar-inner"><a class="brand" href="./" aria-label="AutoDijelovi – početna"><span class="brand-mark">AD</span><span><b>AutoDijelovi</b><small>Javni katalog dijelova</small></span></a><div id="viber-info" class="contact" style="display:none">Viber / WhatsApp<strong id="viber-broj-prikaz"></strong></div></div></header>
+<header class="topbar" id="topbar"><div class="topbar-inner"><a class="brand" href="./" aria-label="Početna"><span class="brand-mark" id="zg-znak">AD</span><img id="zg-logo" class="brand-logo-img" alt="" hidden><span><b id="zg-naziv">AutoDijelovi</b><small id="zg-pod">Javni katalog dijelova</small></span></a><div class="contact-blok"><div id="zg-kontakt" class="contact" hidden></div><div id="viber-info" class="contact" style="display:none">Viber / WhatsApp<strong id="viber-broj-prikaz"></strong></div></div></div><div id="zg-obavijest" class="obavijest" hidden></div></header>
 
 <div id="izbor-overlay" class="izbor-overlay" onclick="if(event.target===this) zatvoriIzbor();">
     <div class="izbor-box" role="dialog" aria-modal="true" aria-labelledby="izbor-naslov">
@@ -132,6 +133,41 @@ const API = (() => {
     return h === "katalog.autodijelovi.site" ? "" : "https://katalog.autodijelovi.site";
 })();
 let serverMod = false;
+
+
+// ---------- Zaglavlje (uređuje se u ERP-u: Postavke firme → Zaglavlje javne stranice) ----------
+function primijeniZaglavlje(z) {
+    if (!z || typeof z !== "object") return;
+    const el = id => document.getElementById(id);
+    if (z.naziv) el("zg-naziv").textContent = z.naziv;
+    if (z.podnaslov) el("zg-pod").textContent = z.podnaslov;
+    if (/^data:image\//.test(z.logo || "")) { el("zg-logo").src = z.logo; el("zg-logo").hidden = false; el("zg-znak").hidden = true; }
+    const linije = [z.telefon, z.radno, z.adresa].filter(Boolean);
+    const k = el("zg-kontakt");
+    k.textContent = "";
+    linije.forEach((t, i) => { if (i) k.appendChild(document.createElement("br")); k.appendChild(document.createTextNode(t)); });
+    k.hidden = !linije.length;
+    const bar = el("topbar");
+    if (/^#[0-9a-fA-F]{6}$/.test(z.boja || "")) {
+        const r = parseInt(z.boja.substr(1, 2), 16), g = parseInt(z.boja.substr(3, 2), 16), b = parseInt(z.boja.substr(5, 2), 16);
+        const svijetla = (r * 299 + g * 587 + b * 114) / 1000 > 150;
+        const tekst = svijetla ? "#2C2C2A" : "#ffffff";
+        bar.classList.add("obojeno");
+        bar.style.background = z.boja; bar.style.color = tekst; bar.style.borderBottomColor = "transparent";
+        bar.style.setProperty("--zg-znak", tekst); bar.style.setProperty("--zg-znak-tekst", z.boja);
+        const ob = el("zg-obavijest");
+        ob.style.background = svijetla ? "rgba(0,0,0,.07)" : "rgba(0,0,0,.25)"; ob.style.color = tekst;
+    }
+    const ob = el("zg-obavijest");
+    ob.textContent = z.obavijest || ""; ob.hidden = !z.obavijest;
+    try { if (z.naziv) document.title = "Pretraga dijelova | " + z.naziv; } catch (e) {}
+}
+function zaglavljeIzPostavki(p) {
+    let z = null;
+    try { z = p && p.zaglavlje ? JSON.parse(p.zaglavlje) : null; } catch (e) { z = null; }
+    if (z) { primijeniZaglavlje(z); try { localStorage.setItem("zaglavlje", JSON.stringify(z)); } catch (e) {} }
+}
+try { primijeniZaglavlje(JSON.parse(localStorage.getItem("zaglavlje") || "null")); } catch (e) {}
 
 function prikaziViber() {
     if (viberBroj) {
@@ -254,6 +290,7 @@ fetch(API + "/api/postavke", { cache: "no-store" })
         if (!p || typeof p !== "object" || !("viber_broj" in p)) throw new Error("server nije napunjen");
         serverMod = true;
         viberBroj = String(p.viber_broj || "");
+        zaglavljeIzPostavki(p);
         ucitano = true;
         prikaziViber();
         izgradiFiltere();
