@@ -63,7 +63,7 @@ body.dio-mod .intro,body.dio-mod .search-panel,body.dio-mod .results-bar,body.di
 .marka-plocica:hover{border-color:var(--blue);box-shadow:0 5px 16px #23395210}.marka-plocica small{font-weight:500;font-size:11px;color:var(--muted)}
 .plocica-logo{width:44px;height:44px;object-fit:contain}.plocica-logo-prazno{display:block;width:44px;height:44px;border-radius:50%;background:var(--soft2)}
 .plocica-ikona{width:44px;height:44px;border-radius:50%;background:var(--soft2);display:grid;place-items:center;color:#7a8ba3}.plocica-ikona svg{width:22px;height:22px}
-body.pocetna-mod .results-bar,body.pocetna-mod #rezultati,body.pocetna-mod #prazno,body.pocetna-mod #more,body.pocetna-mod .search-panel .filters,body.pocetna-mod #vozilo-label,body.pocetna-mod .search-panel .examples,body.pocetna-mod .search-panel .hint{display:none!important}
+body.pocetna-mod:not(.tekst-mod) .results-bar,body.pocetna-mod:not(.tekst-mod) #rezultati,body.pocetna-mod:not(.tekst-mod) #prazno,body.pocetna-mod:not(.tekst-mod) #more,body.pocetna-mod .search-panel .filters,body.pocetna-mod #vozilo-label,body.pocetna-mod .search-panel .examples,body.pocetna-mod .search-panel .hint{display:none!important}
 body.lista-mod #marke-mreza{display:none!important}
 .rb-lijevo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}.rb-desno{display:flex;align-items:center;gap:10px}
 .sve-marke{border:1px solid var(--line);background:var(--card);color:var(--blue);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:650}
@@ -930,13 +930,17 @@ function upitOpsti(tekst) {
 function azurirajNacin() {
     if (!serverMod || window.__DIO) return true;
     const upit = document.getElementById("pretraga").value.trim();
-    const lista = !!izabranaMarka || bezVozila || upit.length >= 2 || markeBrojevi === null;
-    const nacin = lista ? "lista" : "pocetna";
-    document.body.classList.toggle("lista-mod", lista);
-    document.body.classList.toggle("pocetna-mod", !lista);
+    // Bočni raspored s filterima samo kad je izabrano vozilo; obično kucanje u pretragu ostaje na glavnoj pretrazi.
+    const bocni = !!izabranaMarka || bezVozila || markeBrojevi === null;
+    const tekst = !bocni && upit.length >= 2;
+    const lista = bocni || tekst;
+    const nacin = bocni ? "lista" : "pocetna";
+    document.body.classList.toggle("lista-mod", bocni);
+    document.body.classList.toggle("pocetna-mod", !bocni);
+    document.body.classList.toggle("tekst-mod", tekst);
     document.getElementById("marke-mreza").hidden = lista || !markeBrojevi;
-    document.getElementById("sve-marke").hidden = !lista || markeBrojevi === null;
-    document.querySelector('label.search-label[for="pretraga"]').textContent = lista ? "Naziv dijela ili kataloški broj" : "Traži po nazivu ili kataloškom broju";
+    document.getElementById("sve-marke").hidden = !bocni || markeBrojevi === null;
+    document.querySelector('label.search-label[for="pretraga"]').textContent = bocni ? "Naziv dijela ili kataloški broj" : "Traži po nazivu ili kataloškom broju";
     const panel = document.querySelector(".search-panel");
     if (nacin === "lista" && prosliNacin !== "lista" && window.innerWidth < 1000) panel.classList.add("sklopljen");
     prosliNacin = nacin;
