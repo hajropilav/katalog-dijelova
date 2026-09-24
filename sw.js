@@ -1,6 +1,6 @@
 // Servisni radnik: aplikacija se otvara odmah (i bez mreže), a pretraga uvijek ide na server.
 // Povećaj VERZIJA kad se promijeni index.html da se stari keš odbaci.
-const VERZIJA = "v6";
+const VERZIJA = "v7";
 const KES = "autodijelovi-" + VERZIJA;
 const LJUSKA = ["/", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
